@@ -26,7 +26,7 @@ class Display : public Module {
 
 		void write();
 
-		void Display::print(Screen screen,float speed, float delay);
+		void print(Screen screen,float speed, float delay);
 };
 
 #endif
