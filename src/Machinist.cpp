@@ -1,6 +1,6 @@
 #include "Machinist.hpp"
 
-Machinist::Machinist(const char * name, int taskCore) : Module(name, taskCore), state(READY) {
+Machinist::Machinist(const char * name, int taskCore) : Module(name, taskCore), screen(SPEED) {
 	// defining lambda to call the private work
 	this->privateAction = [this]() {
 		// Since timer was execute then free its resources
@@ -63,93 +63,4 @@ void Machinist::run(void* data) {
 
 void Machinist::work(){
 	Serial.println("I will work...\n");
-	if(this->state == GOING_DOWN || this->state == GOING_UP ){
-		if(!this->calculateFloor()){
-			Serial.println("between floors");
-			Serial.printf("this->currentFloor = %d \n",this->currentFloor);
-			return;
-		}
-		else {
-			// Error because I can't decide
-			Serial.println("Just Passing Floor");
-		}
-	}
-
-	// Turn off because we arrived
-	if(this->currentFloor == this->targetFloor) {
-		this->motor->off();
-		if(this->state == HOME){
-			this->setState(READY);
-		}
-		// I hope everything is right
-		else if(this->state == GOING_DOWN || this->state == GOING_UP){
-			this->setState(ARRIVED);
-		}
-		else if(this->state == ARRIVED){
-			this->setState(WAITING);
-		}
-		Serial.printf("Will not move from %d \n", (this->currentFloor));
-		return;
-	}
-
-	if(this->currentFloor < this->targetFloor) {
-		this->motor->up();
-		this->setState(GOING_UP);
-		Serial.printf("Will move from %d to %d \n", (this->currentFloor), (this->targetFloor));
-		return;
-	}
-
-	if(this->currentFloor > this->targetFloor) {
-		this->motor->down();
-		this->setState(GOING_DOWN);
-		Serial.printf("Will move from %d to %d \n", (this->currentFloor), (this->targetFloor));
-		return;
-	}
-
-}
-
-void Machinist::setFloorStates(bool floor1 , bool floor2, bool floor3){
-	this->floorStates[0] = floor1;
-	this->floorStates[1] = floor2;
-	this->floorStates[2] = floor3;
-
-	if(!this->calculateFloor()){
-		Serial.println("error calculating floor Setting 3 .....");
-		this->currentFloor = 3;
-	}
-	this->handleTargetFloor(1);
-	work();
-}
-
-void Machinist::setState(Work newState){
-	this->state = newState;
-	Serial.println("\t ---- State of Machinist :  " + this->dictionary[this->state] + " ---");
-}
-
-bool Machinist::calculateFloor(){
-	for(int i=0 ; i<3 ;i++){
-		Serial.print("\t|\t");
-		Serial.print(this->floorStates[0]);
-	}
-	Serial.println("\t|\t");
-
-	if (this->floorStates[0] == true && this->floorStates[1] == false && this->floorStates[2] == false) {
-		this->currentFloor = 1;
-		Serial.println("\t ==== floor set 1 ====");
-		return true;
-
-	}
-	else if (this->floorStates[1] == true && this->floorStates[0] == false && this->floorStates[2] == false) {
-		this->currentFloor = 2;
-		Serial.println("\t ==== floor set 2 ====");
-		return true;
-	}
-	else if (this->floorStates[2] == true && this->floorStates[1] == false && this->floorStates[1] == false){
-		this->currentFloor = 3;
-		Serial.println("\t ==== floor set 3 ====");
-		return true;
-	}
-	else{
-		return false;
-	}
 }

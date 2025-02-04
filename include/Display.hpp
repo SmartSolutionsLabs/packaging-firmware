@@ -9,7 +9,7 @@
 
 class Display : public Module {
 	private:
-		LiquidCrystal lcd(22,23,5,18,19,21);
+		LiquidCrystal * lcd;
 
 		Machinist * machinist;
 

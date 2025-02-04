@@ -3,35 +3,18 @@
 
 #include <Module.hpp>
 
+#include <Preferences.h>
+
 #include "Motor.hpp"
 
-enum Work {
-	HOME, // initial work
-	READY, // accepting instructions from anyone and executes "inmediately"
-	GOING_DOWN, // ascending
-	GOING_UP, // descending
-	WAITING, // basket arrived from another floor to current floor
-	ARRIVED, // work completed
-	LOST // bewildered, disconcerted to take decisions
+// Used to hold current screen of menu
+enum Screen {
+	SPEED
 };
 
 class Machinist : public Module {
 	private:
-		Work state;
-
-		/**
-		 * Where basket must go.
-		 */
-
-		String dictionary[7] = {"HOME","READY","GOING_DOWN","GOING_UP","WAITING","ARRIVED","LOST"};
-
-		unsigned int currentFloor = 3;
-
-		unsigned int targetFloor = 1;
-
-		unsigned int upperLimit = 1;
-
-		bool floorStates[3];
+		Screen screen;
 
 		Motor * motor;
 
@@ -71,27 +54,17 @@ class Machinist : public Module {
 		 */
 		void handleTargetFloor(unsigned int targetFloor);
 
-		Work getState() {
-			return state;
+		Screen getScreen() {
+			return screen;
 		}
 
 		void setMotor(Motor * newMotor) {
 			motor = newMotor;
 		}
 
-		void setUpperLimit(unsigned int limit) {
-			upperLimit = limit;
+		void setScreen(Screen newScreen) {
+			screen = newScreen;
 		}
-
-		unsigned int getUpperLimit() {
-			return upperLimit;
-		}
-
-		void setFloorStates(bool floor1 , bool floor2, bool floor3);
-
-		void setState(Work newState);
-
-		bool calculateFloor();
 };
 
 #endif
