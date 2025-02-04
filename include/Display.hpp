@@ -2,7 +2,7 @@
 #define INC_DISPLAY
 
 #include <Module.hpp>
-
+#include <Wire.h>
 #include <LiquidCrystal.h>
 
 #include "Machinist.hpp"
