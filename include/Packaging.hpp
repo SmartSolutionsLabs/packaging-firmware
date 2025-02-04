@@ -7,6 +7,9 @@
 #include "Machinist.hpp"
 #include "Joypad.hpp"
 
+#define INDEX_MODULE_MACHINIST 0
+#define INDEX_MODULE_JOYPAD 1
+
 #define CAST_MODULE_POINTER(type, index) (static_cast<type*>(this->modulesPointer[(index)]))
 
 class Packaging : public Application {

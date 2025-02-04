@@ -1,11 +1,11 @@
-#include "Elevator.hpp"
+#include "Packaging.hpp"
 
-Elevator * elevator;
+Packaging * packaging;
 
 void setup() {
-	elevator = new Elevator();
-	elevator->beginSerialPort(Serial);
-	elevator->initializeModulesPointerArray(6);
+	packaging = new Packaging();
+	packaging->beginSerialPort(Serial);
+	packaging->initializeModulesPointerArray(6);
 }
 
 void loop() {
