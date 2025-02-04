@@ -5,10 +5,13 @@ Display::Display(const char * name, int taskCore) : Module(name, taskCore) {
 }
 
 void Display::connect(void * data) {
-    this->lcd->begin(16,2);
-    this->lcd->home();
-    this->lcd->setCursor ( 0, 1 ); 
-    this->lcd->print ("Etiquetadora");
+    this->lcd = new LCD_I2C(0x27, 16, 2);
+    this->lcd->begin();
+
+    this->lcd->backlight();
+    this->lcd->setCursor(3, 0);
+    this->lcd->print(F("Etiquetadora"));
+    Serial.print("Display connected.\n");
 }
 
 void Display::run(void* data) {

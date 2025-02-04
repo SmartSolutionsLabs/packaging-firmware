@@ -20,9 +20,13 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 
 	this->modulesPointer = new Module*[quantity];
 
+	this->modulesPointer[INDEX_MODULE_DISPLAY] = new Display("display");
+	this->modulesPointer[INDEX_MODULE_DISPLAY]->connect(nullptr);
+
 	this->modulesPointer[INDEX_MODULE_MACHINIST] = new Machinist("mac");
 	this->modulesPointer[INDEX_MODULE_MACHINIST]->connect(nullptr);
-	this->modulesPointer[INDEX_MODULE_MACHINIST]->start();
+	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setDisplay(CAST_MODULE_POINTER(Display, INDEX_MODULE_DISPLAY));
+	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->showData();
 
 	this->modulesPointer[INDEX_MODULE_JOYPAD] = new Joypad("jpd");
 	this->modulesPointer[INDEX_MODULE_JOYPAD]->connect(nullptr);

@@ -6,13 +6,8 @@
 #include <Preferences.h>
 
 #include "Motor.hpp"
-
-// Used to hold current screen of menu
-enum Screen {
-	READY,
-	SPEED,
-	DELAY
-};
+#include "Screen.hpp"
+#include "Display.hpp"
 
 class Machinist : public Module {
 	private:
@@ -20,6 +15,11 @@ class Machinist : public Module {
 
 		Motor * motor;
 
+		Display * display;
+
+		float speed;
+
+		float delay;
 		/**
 		 * Performs movement of basket.
 		 */
@@ -67,6 +67,10 @@ class Machinist : public Module {
 		void setScreen(Screen newScreen) {
 			screen = newScreen;
 		}
+
+		void showData();
+		
+		void setDisplay(Display * display);
 };
 
 #endif

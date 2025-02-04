@@ -2,16 +2,13 @@
 #define INC_DISPLAY
 
 #include <Module.hpp>
+#include <Screen.hpp>
 #include <Wire.h>
-#include <LiquidCrystal.h>
-
-#include "Machinist.hpp"
+#include <LCD_I2C.h>
 
 class Display : public Module {
 	private:
-		LiquidCrystal * lcd;
-
-		Machinist * machinist;
+		LCD_I2C  * lcd;
 
 	public:
 		Display(const char * name, int taskCore = 1);
@@ -19,10 +16,6 @@ class Display : public Module {
 		void connect(void * data) override;
 
 		void run(void* data) override;
-
-		void setMachinist(Machinist * newMachinist) {
-			machinist = newMachinist;
-		}
 
 		void write();
 

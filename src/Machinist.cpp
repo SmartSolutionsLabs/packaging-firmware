@@ -42,3 +42,11 @@ void Machinist::run(void* data) {
 void Machinist::work(){
 	Serial.println("I will work...\n");
 }
+
+void Machinist::showData(){
+	this->display->print(this->screen, this->speed, this->delay);
+}
+
+void Machinist::setDisplay(Display * display){
+	this->display = display;
+}
