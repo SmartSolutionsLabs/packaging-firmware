@@ -9,7 +9,9 @@
 
 // Used to hold current screen of menu
 enum Screen {
-	SPEED
+	READY,
+	SPEED,
+	DELAY
 };
 
 class Machinist : public Module {
