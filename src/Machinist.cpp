@@ -24,32 +24,10 @@ Machinist::~Machinist() {
 }
 
 void Machinist::handleArrivedFloor(unsigned int floorIndex, bool value) {
-	this->floorStates[floorIndex - 1] = value;
-	this->calculateFloor();
 	this->work();
 }
 
 void Machinist::handleTargetFloor(unsigned int targetFloor) {
-	if (targetFloor == 0 || targetFloor > this->upperLimit) {
-		Serial.print("target floor out of bound\n");
-		return;
-	}
-
-	this->targetFloor = targetFloor;
-	Serial.printf("target floor %d \n", targetFloor);
-	if(this->countdownHandTimer == nullptr) {
-		static const esp_timer_create_args_t countdown_timer_args = {
-			.callback = [](void* arg) {
-				auto* lambda = static_cast<std::function<void()>*>(arg);
-				(*lambda)(); // Execute lambda
-			},
-			.arg = &this->privateAction,
-			.dispatch_method = ESP_TIMER_TASK,
-			.name = "machinist-countdown"
-		};
-		esp_timer_create(&countdown_timer_args, &this->countdownHandTimer);
-		esp_timer_start_once(this->countdownHandTimer, 5000000); // One shot after 5 seconds
-	}
 }
 
 void Machinist::connect(void * data) {
