@@ -17,9 +17,16 @@ class Machinist : public Module {
 
 		Display * display;
 
+		Preferences * preferences;
+
 		float speed;
 
 		float delay;
+
+		float speedStep;
+
+		float delayStep;
+
 		/**
 		 * Performs movement of basket.
 		 */
@@ -69,8 +76,14 @@ class Machinist : public Module {
 		}
 
 		void showData();
-		
-		void setDisplay(Display * display);
+
+		void setDisplay(Display * newDisplay) {
+			display = newDisplay;
+		}
+
+		// Save into ROM new "constants"
+		void saveSpeedStep(float step);
+		void saveDelayStep(float step);
 };
 
 #endif

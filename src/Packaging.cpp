@@ -3,11 +3,45 @@
 #include <BluetoothLowEnergy.hpp>
 
 void Packaging::processMessage(unsigned char * message, size_t length, bool printable) {
-	unsigned int floor = (unsigned int) message[0] - '0';
-	Serial.println(floor);
-	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->handleTargetFloor(floor);
+	// String class to use easy methods
+	String msgStr = String((char*)message);
 
+	// No longer needed
 	delete[] message;
+
+	// Look for separator ":"
+	int separatorIndex = msgStr.indexOf(':');
+	if (separatorIndex == -1) {
+		Serial.print("Format option:value.\n");
+		#ifdef __SMART_APPLICATION_WITH_BLE__
+		BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "Format option:value.\n");
+		#endif
+		return;
+	}
+
+	// before :
+	int option = msgStr.substring(0, separatorIndex).toInt();
+
+	// after :
+	float value = msgStr.substring(separatorIndex + 1).toFloat();
+
+	switch (option) {
+		case 1: // setting speed step
+			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveSpeedStep(value);
+			#ifdef __SMART_APPLICATION_WITH_BLE__
+			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new SPEED step\n");
+			#endif
+			break;
+		case 2: // setting delay step
+			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveDelayStep(value);
+			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new DELAY step\n");
+			break;
+		default:
+			#ifdef __SMART_APPLICATION_WITH_BLE__
+			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "option:value (option 1 is speed; option 2 is delay)\n");
+			#endif
+			break;
+	}
 }
 
 void Packaging::initializeModulesPointerArray(unsigned int quantity) {
