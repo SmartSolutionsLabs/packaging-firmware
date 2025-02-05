@@ -16,8 +16,9 @@
 #define INDEX_MODULE_MACHINIST 0
 #define INDEX_MODULE_JOYPAD 1
 #define INDEX_MODULE_DISPLAY 2
-#define INDEX_MODULE_SENSOR 3
+#define INDEX_MODULE_SENSOR_BOTTLE 3
 #define INDEX_MODULE_MOTOR 4
+#define INDEX_MODULE_SENSOR_LABEL 5
 
 #define CAST_MODULE_POINTER(type, index) (static_cast<type*>(this->modulesPointer[(index)]))
 

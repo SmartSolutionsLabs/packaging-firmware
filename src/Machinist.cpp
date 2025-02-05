@@ -23,8 +23,19 @@ Machinist::~Machinist() {
 	}
 }
 
-void Machinist::handleArrivedFloor(unsigned int floorIndex, bool value) {
-	this->work();
+void Machinist::handleArrivedFloor(unsigned int id, bool value) {
+	// Bottle sensor
+	if (id == 0 && this->enabled && value == false) {
+		this->work();
+		return;
+	}
+
+	// Label sensor
+	if (id == 1) {
+		this->enabled = value;
+		Serial.printf("Motor status : %d \n" ,value);
+		return;
+	}
 }
 
 void Machinist::handlePush(int key) {

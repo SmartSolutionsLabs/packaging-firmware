@@ -96,12 +96,20 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 	this->modulesPointer[INDEX_MODULE_JOYPAD]->start();
 
 	pin = 17;
-	this->modulesPointer[INDEX_MODULE_SENSOR] = new Sensor("snr", 1); // using second core
-	this->modulesPointer[INDEX_MODULE_SENSOR]->connect(&pin);
-	this->modulesPointer[INDEX_MODULE_SENSOR]->start();
+	this->modulesPointer[INDEX_MODULE_SENSOR_BOTTLE] = new Sensor("snrBtl", 1); // using second core
+	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR_BOTTLE)->setFloor(0);
+	this->modulesPointer[INDEX_MODULE_SENSOR_BOTTLE]->connect(&pin);
+	this->modulesPointer[INDEX_MODULE_SENSOR_BOTTLE]->start();
+
+	pin = 5;
+	this->modulesPointer[INDEX_MODULE_SENSOR_LABEL] = new Sensor("snrLbl", 1); // using second core
+	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR_LABEL)->setFloor(1);
+	this->modulesPointer[INDEX_MODULE_SENSOR_LABEL]->connect(&pin);
+	this->modulesPointer[INDEX_MODULE_SENSOR_LABEL]->start();
 
 	// Passing references with machinist
-	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR)->setMachinist(CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST));
+	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR_BOTTLE)->setMachinist(CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST));
+	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR_LABEL)->setMachinist(CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST));
 	CAST_MODULE_POINTER(Joypad, INDEX_MODULE_JOYPAD)->setMachinist(CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST));
 }
 

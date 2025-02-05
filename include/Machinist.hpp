@@ -15,6 +15,8 @@ class Machinist : public Module {
 
 		Motor * motor;
 
+		bool enabled;
+
 		Display * display;
 
 		Preferences * preferences;
