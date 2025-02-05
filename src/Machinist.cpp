@@ -23,7 +23,7 @@ Machinist::~Machinist() {
 	}
 }
 
-void Machinist::handleArrivedFloor(unsigned int floorIndex, bool value) {
+void Machinist::handleArrivedFloor(unsigned int floorIndex, bool value) {	
 	this->work();
 }
 
@@ -84,13 +84,13 @@ void Machinist::handlePush(int key) {
 		case CHANGE_SPEED:
 			if (key == 1) {
 				// Change to speed configuration
-				this->speed = this->speed - 0.1;
+				this->speed = this->speed - this->speedStep;
 				if(this->speed < 0.1) this->speed == 0.1;
 				this->display->print(this->screen, this->speed, this->delay);
 			}
 			else if (key == 3) {
 				// Change to speed configuration
-				this->speed = this->speed + 0.1;
+				this->speed = this->speed + this->speedStep;
 				if(this->speed > 10) this->speed == 10;
 				this->display->print(this->screen, this->speed, this->delay);
 			}
@@ -104,14 +104,14 @@ void Machinist::handlePush(int key) {
 		case CHANGE_DELAY:
 			if (key == 1) {
 				// Change to speed configuration
-				this->delay = this->delay - 50;
+				this->delay = this->delay - this->delayStep;
 				if(this->speed < 50) this->speed == 50;
 				this->display->print(this->screen, this->speed, this->delay);
 			}
 			else if (key == 3) {
 				// Change to speed configuration
-				this->delay = this->delay + 50;
-				if(this->speed > 4500) this->speed == 4500;
+				this->delay = this->delay + this->delayStep;
+				if(this->speed > 5000) this->speed == 5000;
 				this->display->print(this->screen, this->speed, this->delay);
 			}
 			else if (key == 2) {
@@ -128,8 +128,8 @@ void Machinist::connect(void * data) {
 	this->preferences->begin("global", false);
 
 	// loading "constants" data
-	this->speed = this->preferences->getFloat("speedStep", 1.0);
-	this->delay = this->preferences->getFloat("delayStep", 100);
+	this->speedStep = this->preferences->getFloat("speedStep", 0.1);
+	this->delayStep = this->preferences->getFloat("delayStep", 50);
 }
 
 void Machinist::run(void* data) {
