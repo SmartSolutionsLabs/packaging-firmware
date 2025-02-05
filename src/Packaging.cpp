@@ -81,7 +81,7 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 	this->modulesPointer[INDEX_MODULE_DISPLAY]->connect(nullptr);
 
 	pin = 18;
-	this->modulesPointer[INDEX_MODULE_MOTOR] = new Motor("mtr");
+	this->modulesPointer[INDEX_MODULE_MOTOR] = new Motor("mtr", 1); // using second core
 	this->modulesPointer[INDEX_MODULE_MOTOR]->connect(&pin);
 	this->modulesPointer[INDEX_MODULE_MOTOR]->start();
 
@@ -96,7 +96,7 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 	this->modulesPointer[INDEX_MODULE_JOYPAD]->start();
 
 	pin = 17;
-	this->modulesPointer[INDEX_MODULE_SENSOR] = new Sensor("snr");
+	this->modulesPointer[INDEX_MODULE_SENSOR] = new Sensor("snr", 1); // using second core
 	this->modulesPointer[INDEX_MODULE_SENSOR]->connect(&pin);
 	this->modulesPointer[INDEX_MODULE_SENSOR]->start();
 
