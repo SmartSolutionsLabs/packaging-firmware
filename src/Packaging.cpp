@@ -62,8 +62,9 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 	this->modulesPointer[INDEX_MODULE_DISPLAY] = new Display("display");
 	this->modulesPointer[INDEX_MODULE_DISPLAY]->connect(nullptr);
 
+	pin = 17;
 	this->modulesPointer[INDEX_MODULE_MOTOR] = new Motor("mtr");
-	this->modulesPointer[INDEX_MODULE_MOTOR]->connect(nullptr);
+	this->modulesPointer[INDEX_MODULE_MOTOR]->connect(&pin);
 	this->modulesPointer[INDEX_MODULE_MOTOR]->start();
 
 	this->modulesPointer[INDEX_MODULE_MACHINIST] = new Machinist("mac");

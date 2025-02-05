@@ -4,6 +4,9 @@
 #include <Module.hpp>
 
 class Motor : public Module {
+	private:
+		unsigned int stepPin;
+
 	public:
 		Motor(const char * name, int taskCore = 1);
 
@@ -13,9 +16,7 @@ class Motor : public Module {
 
 		void off();
 
-		void up();
-
-		void down();
+		void moveSteps(float speed, float length, int Kstepcm);
 };
 
 #endif

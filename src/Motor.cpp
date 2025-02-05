@@ -4,12 +4,10 @@ Motor::Motor(const char * name, int taskCore) : Module(name, taskCore) {
 }
 
 void Motor::connect(void * data) {
-	pinMode(12, OUTPUT);
-	pinMode(13, OUTPUT);
-	pinMode(14, OUTPUT);
-	digitalWrite(12, HIGH);
-	digitalWrite(13, HIGH);
-	digitalWrite(14, HIGH);
+	this->stepPin = * (unsigned int *) data;
+
+	pinMode(this->stepPin, OUTPUT);
+	digitalWrite(this->stepPin, LOW);
 }
 
 void Motor::run(void* data) {
@@ -19,20 +17,29 @@ void Motor::run(void* data) {
 }
 
 void Motor::off() {
-	delay(150);
-	digitalWrite(13, HIGH);
-	digitalWrite(14, HIGH);
+	digitalWrite(this->stepPin, LOW);
 	Serial.println("Motor::off");
 }
 
-void Motor::up() {
-	digitalWrite(13, LOW);
-	digitalWrite(14, HIGH);
-	Serial.println("Motor::up");
-}
+void Motor::moveSteps(float speed, float length, int Kstepcm) { //length en cm , speed en cm/s ,Kstepcm en cm/tick
+	int time; //time , en milisegundos
+	if (speed !=0){
+		time = 1000 * length / speed;
+	}
+	else {
+		time = 0 ;
+		return;
+	}
 
-void Motor::down() {
-	digitalWrite(13, HIGH);
-	digitalWrite(14, LOW);
-	Serial.println("Motor::down");
+	int steps = length / Kstepcm;
+	TickType_t xDelay = (time / 2 * steps) / portTICK_PERIOD_MS;
+
+	for (int i=0; i < steps; i++){
+		digitalWrite(this->stepPin, HIGH);
+		vTaskDelay(xDelay); //pulso de subida
+		digitalWrite(this->stepPin, LOW);
+		vTaskDelay(xDelay); //pulso de bajada
+	}
+
+	Serial.println("Motor::Stepping");
 }
