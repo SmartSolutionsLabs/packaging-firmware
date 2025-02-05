@@ -36,13 +36,13 @@ void Packaging::processMessage(unsigned char * message, size_t length, bool prin
 			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveDelayStep(value);
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new DELAY step\n");
 			break;
-		case 3: // setting speed step
+		case 3: // setting LabelLength
 			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveLabelLength(value);
 			#ifdef __SMART_APPLICATION_WITH_BLE__
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new LabelLength \n");
 			#endif
 			break;
-		case 4: // setting speed step
+		case 4: // setting Kstepcm 
 			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveKstepcm(value);
 			#ifdef __SMART_APPLICATION_WITH_BLE__
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new Kstepcm \n");
