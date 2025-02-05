@@ -127,9 +127,13 @@ void Machinist::connect(void * data) {
 	this->preferences = new Preferences();
 	this->preferences->begin("global", false);
 
-	// loading "constants" data
+	// loading "steps" data
 	this->speedStep = this->preferences->getFloat("speedStep", 0.1);
 	this->delayStep = this->preferences->getFloat("delayStep", 50);
+
+	// loading "constants" data
+	this->labelLength = this->preferences->getFloat("labelLength", 4); // define el tamaño de etiqueta
+	this->Kstepcm = this->preferences->getFloat("Kstepcm", 100); //define cuantos pasos da el motor para mover la etiqueta 1 cm.
 }
 
 void Machinist::run(void* data) {
@@ -142,7 +146,7 @@ void Machinist::work(){
 	Serial.print("I will work...\n");
 
 	// Wake up the motor
-	this->motor->moveSteps(this->speed, 1.0, 1);
+	this->motor->moveSteps(this->speed, this->labelLength, this->Kstepcm);
 }
 
 void Machinist::showData(){
@@ -159,4 +163,16 @@ void Machinist::saveDelayStep(float step) {
 	this->delayStep = step;
 
 	this->preferences->putFloat("delayStep", this->delayStep);
+}
+
+void Machinist::saveLabelLength(float newlabelLength) {
+	this->labelLength = newlabelLength;
+
+	this->preferences->putFloat("labelLength", this->labelLength);
+}
+
+void Machinist::saveKstepcm(float newKstepcm) {
+	this->Kstepcm = newKstepcm;
+
+	this->preferences->putFloat("Kstepcm", this->Kstepcm);
 }

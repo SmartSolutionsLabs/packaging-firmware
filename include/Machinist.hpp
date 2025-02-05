@@ -27,6 +27,9 @@ class Machinist : public Module {
 
 		float delayStep;
 
+		float labelLength;
+
+		float Kstepcm;
 		/**
 		 * Performs movement of basket.
 		 */
@@ -85,6 +88,8 @@ class Machinist : public Module {
 		// Save into ROM new "constants"
 		void saveSpeedStep(float step);
 		void saveDelayStep(float step);
+		void saveLabelLength(float newlabelLength);
+		void saveKstepcm(float newKstepcm);
 };
 
 #endif
