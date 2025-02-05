@@ -23,29 +23,58 @@ void Display::print(Screen screen, float speed, float delay){
 	switch (screen){
 		case READY:
 			this->lcd->setCursor(0,0);
-			this->lcd->print("Speed :");
+			this->lcd->print("Speed : ");
 			this->lcd->setCursor(8,0);
-			this->lcd->print(speed);
+			this->lcd->print(speed,1);
+			this->lcd->setCursor(12,0);
+			this->lcd->print("cm/s");
 
 			this->lcd->setCursor(0,1);
 			this->lcd->print("Delay :");
-			this->lcd->setCursor(8,0);
-			this->lcd->print(delay);
+			this->lcd->setCursor(8,1);
+			this->lcd->print(delay,0);
+			this->lcd->setCursor(12,1);
+			this->lcd->print("ms");
 			break;
+
 		case SPEED:
 			this->lcd->setCursor(0,0);
 			this->lcd->print("      Speed     ");
-			this->lcd->setCursor(3,1);
-			this->lcd->print(speed);
+			this->lcd->setCursor(4,1);
+			this->lcd->print(speed,1);
 			this->lcd->setCursor(9,1);
-			this->lcd->print(" cm/s");
+			this->lcd->print("cm/s");
 			break;
+
 		case DELAY:
 			this->lcd->setCursor(0,0);
-			this->lcd->print("Delay");
+			this->lcd->print("      Delay     ");
+			this->lcd->setCursor(4,1);
+			this->lcd->print(delay,0);
+			this->lcd->setCursor(9,1);
+			this->lcd->print("ms");
+			break;
+
+		case CHANGE_SPEED:
+			this->lcd->setCursor(0,0);
+			this->lcd->print("      Speed     ");
 			this->lcd->setCursor(0,1);
-			this->lcd->print(delay);
-			this->lcd->print(" ms");
+			this->lcd->print("->");
+			this->lcd->setCursor(4,1);
+			this->lcd->print(speed,1);
+			this->lcd->setCursor(10,1);
+			this->lcd->print("cm/s");
+			break;
+
+		case CHANGE_DELAY:
+			this->lcd->setCursor(0,0);
+			this->lcd->print("      Delay     ");
+			this->lcd->setCursor(0,1);
+			this->lcd->print("->");
+			this->lcd->setCursor(4,1);
+			this->lcd->print(delay,0);
+			this->lcd->setCursor(9,1);
+			this->lcd->print("ms");
 			break;
 	}
 }
