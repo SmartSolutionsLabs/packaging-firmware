@@ -86,6 +86,8 @@ class Machinist : public Module {
 		}
 
 		// Save into ROM new "constants"
+		void saveSpeed(float speed);
+		void saveDelay(float delay);
 		void saveSpeedStep(float step);
 		void saveDelayStep(float step);
 		void saveLabelLength(float newlabelLength);

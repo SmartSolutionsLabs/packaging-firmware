@@ -23,7 +23,7 @@ Machinist::~Machinist() {
 	}
 }
 
-void Machinist::handleArrivedFloor(unsigned int floorIndex, bool value) {	
+void Machinist::handleArrivedFloor(unsigned int floorIndex, bool value) {
 	this->work();
 }
 
@@ -34,98 +34,86 @@ void Machinist::handlePush(int key) {
 			if (key == 1) {
 				// Change to speed configuration
 				this->screen = DELAY;
-				this->display->print(this->screen, this->speed, this->delay);
 			}
 			else if (key == 3) {
 				// Change to speed configuration
 				this->screen = SPEED;
-				this->display->print(this->screen, this->speed, this->delay);
 			}
 			else if (key == 2) {
 				// Change to speed configuration
 				this->screen = READY;
-				//this->display->print(this->screen, this->speed, this->delay);
 			}
 			break;
 		case SPEED:
 			if (key == 1) {
 				// Change to speed configuration
 				this->screen = READY;
-				this->display->print(this->screen, this->speed, this->delay);
 			}
 			else if (key == 3) {
 				// Change to speed configuration
 				this->screen = DELAY;
-				this->display->print(this->screen, this->speed, this->delay);
 			}
 			else if (key == 2) {
 				// Change to speed configuration
 				this->screen = CHANGE_SPEED;
-				this->display->print(this->screen, this->speed, this->delay);
 			}
 			break;
 		case DELAY:
 			if (key == 1) {
 				// Change to speed configuration
 				this->screen = SPEED;
-				this->display->print(this->screen, this->speed, this->delay);
 			}
 			else if (key == 3) {
 				// Change to speed configuration
 				this->screen = READY;
-				this->display->print(this->screen, this->speed, this->delay);
 			}
 			else if (key == 2) {
 				// Change to speed configuration
 				this->screen = CHANGE_DELAY;
-				this->display->print(this->screen, this->speed, this->delay);
 			}
 			break;
 		case CHANGE_SPEED:
 			if (key == 1) {
 				// Change to speed configuration
-				this->speed = this->speed - this->speedStep;
-				if(this->speed < 0.1) this->speed == 0.1;
-				this->display->print(this->screen, this->speed, this->delay);
+				this->saveSpeed(this->speed - this->speedStep);
 			}
 			else if (key == 3) {
 				// Change to speed configuration
-				this->speed = this->speed + this->speedStep;
-				if(this->speed > 10) this->speed == 10;
-				this->display->print(this->screen, this->speed, this->delay);
+				this->saveSpeed(this->speed + this->speedStep);
 			}
 			else if (key == 2) {
 				// Change to speed configuration
 				this->screen = SPEED;
-				this->display->print(this->screen, this->speed, this->delay);
 			}
 			break;
 
 		case CHANGE_DELAY:
 			if (key == 1) {
-				// Change to speed configuration
-				this->delay = this->delay - this->delayStep;
-				if(this->speed < 50) this->speed == 50;
-				this->display->print(this->screen, this->speed, this->delay);
+				// Save delay decrease
+				this->saveDelay(this->delay - this->delayStep);
 			}
 			else if (key == 3) {
-				// Change to speed configuration
-				this->delay = this->delay + this->delayStep;
-				if(this->speed > 5000) this->speed == 5000;
-				this->display->print(this->screen, this->speed, this->delay);
+				// Save delay increase
+				this->saveDelay(this->delay + this->delayStep);
 			}
 			else if (key == 2) {
 				// Change to speed configuration
 				this->screen = DELAY;
-				this->display->print(this->screen, this->speed, this->delay);
 			}
 			break;
 	}
+
+	// Always send values to display
+	this->display->print(this->screen, this->speed, this->delay);
 }
 
 void Machinist::connect(void * data) {
 	this->preferences = new Preferences();
 	this->preferences->begin("global", false);
+
+	// loading all data set by user in menu
+	this->speed = this->preferences->getFloat("speed", 0.1);
+	this->delay = this->preferences->getFloat("delay", 50.0);
 
 	// loading "steps" data
 	this->speedStep = this->preferences->getFloat("speedStep", 0.1);
@@ -158,6 +146,34 @@ void Machinist::test(int _steps){
 
 void Machinist::showData(){
 	this->display->print(this->screen, this->speed, this->delay);
+}
+
+void Machinist::saveSpeed(float speed) {
+	if(speed < 0.1) {
+		this->speed = 0.1;
+	}
+	else if (speed > 10) {
+		this->speed = 10;
+	}
+	else {
+		this->speed = speed;
+	}
+
+	this->preferences->putFloat("speed", this->speed);
+}
+
+void Machinist::saveDelay(float delay) {
+	if(delay < 50.0) {
+		this->delay = 50.0;
+	}
+	else if (delay > 5000) {
+		this->delay = 5000.0;
+	}
+	else {
+		this->delay = delay;
+	}
+
+	this->preferences->putFloat("delay", this->delay);
 }
 
 void Machinist::saveSpeedStep(float step) {
