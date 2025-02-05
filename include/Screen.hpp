@@ -5,7 +5,9 @@
 enum Screen {
 	READY,
 	SPEED,
-	DELAY
+	DELAY,
+	CHANGE_SPEED,
+	CHANGE_DELAY
 };
 
 #endif
