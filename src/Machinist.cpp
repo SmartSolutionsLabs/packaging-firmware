@@ -31,23 +31,92 @@ void Machinist::handlePush(int key) {
 	// Analize in wich screen we are and process keys according to that
 	switch (this->screen) {
 		case READY:
-			if (key < 0) {
+			if (key == 1) {
+				// Change to speed configuration
+				this->screen = DELAY;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			else if (key == 3) {
+				// Change to speed configuration
+				this->screen = SPEED;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			else if (key == 2) {
+				// Change to speed configuration
+				this->screen = READY;
+				//this->display->print(this->screen, this->speed, this->delay);
+			}
+			break;
+		case SPEED:
+			if (key == 1) {
+				// Change to speed configuration
+				this->screen = READY;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			else if (key == 3) {
+				// Change to speed configuration
+				this->screen = DELAY;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			else if (key == 2) {
+				// Change to speed configuration
+				this->screen = CHANGE_SPEED;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			break;
+		case DELAY:
+			if (key == 1) {
+				// Change to speed configuration
+				this->screen = SPEED;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			else if (key == 3) {
+				// Change to speed configuration
+				this->screen = READY;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			else if (key == 2) {
+				// Change to speed configuration
+				this->screen = CHANGE_DELAY;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			break;
+		case CHANGE_SPEED:
+			if (key == 1) {
+				// Change to speed configuration
+				this->speed = this->speed - 0.1;
+				if(this->speed < 0.1) this->speed == 0.1;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			else if (key == 3) {
+				// Change to speed configuration
+				this->speed = this->speed + 0.1;
+				if(this->speed > 10) this->speed == 10;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			else if (key == 2) {
 				// Change to speed configuration
 				this->screen = SPEED;
 				this->display->print(this->screen, this->speed, this->delay);
 			}
 			break;
-		case SPEED:
-			if (key < 0) {
-				// Change to delay configuration
-				this->screen = DELAY;
+
+		case CHANGE_DELAY:
+			if (key == 1) {
+				// Change to speed configuration
+				this->delay = this->delay - 50;
+				if(this->speed < 50) this->speed == 50;
 				this->display->print(this->screen, this->speed, this->delay);
 			}
-			break;
-		case DELAY:
-			if (key < 0) {
-				// Change to ready screen
-				this->screen = READY;
+			else if (key == 3) {
+				// Change to speed configuration
+				this->delay = this->delay + 50;
+				if(this->speed > 4500) this->speed == 4500;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			else if (key == 2) {
+				// Change to speed configuration
+				this->screen = DELAY;
 				this->display->print(this->screen, this->speed, this->delay);
 			}
 			break;
@@ -60,7 +129,7 @@ void Machinist::connect(void * data) {
 
 	// loading "constants" data
 	this->speed = this->preferences->getFloat("speedStep", 1.0);
-	this->delay = this->preferences->getFloat("delayStep", 1.0);
+	this->delay = this->preferences->getFloat("delayStep", 100);
 }
 
 void Machinist::run(void* data) {
