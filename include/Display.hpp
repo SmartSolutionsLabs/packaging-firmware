@@ -8,7 +8,7 @@
 
 class Display : public Module {
 	private:
-		LCD_I2C  * lcd;
+		LCD_I2C * lcd;
 
 	public:
 		Display(const char * name, int taskCore = 1);
@@ -17,9 +17,7 @@ class Display : public Module {
 
 		void run(void* data) override;
 
-		void write();
-
-		void print(Screen screen,float speed, float delay);
+		void print(Screen screen, float speed, float delay);
 };
 
 #endif

@@ -60,8 +60,9 @@ class Machinist : public Module {
 
 		/**
 		 * Catch calling from buttons.
+		 * We have three so we can use -1 as DOWN, 0 as ENTER, +1 as UP.
 		 */
-		void handleTargetFloor(unsigned int targetFloor);
+		void handlePush(int key);
 
 		Screen getScreen() {
 			return screen;

@@ -56,17 +56,34 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 
 	this->modulesPointer = new Module*[quantity];
 
+	// Pin number for sensor
+	uint8_t pin;
+
 	this->modulesPointer[INDEX_MODULE_DISPLAY] = new Display("display");
 	this->modulesPointer[INDEX_MODULE_DISPLAY]->connect(nullptr);
+
+	this->modulesPointer[INDEX_MODULE_MOTOR] = new Motor("mtr");
+	this->modulesPointer[INDEX_MODULE_MOTOR]->connect(nullptr);
+	this->modulesPointer[INDEX_MODULE_MOTOR]->start();
 
 	this->modulesPointer[INDEX_MODULE_MACHINIST] = new Machinist("mac");
 	this->modulesPointer[INDEX_MODULE_MACHINIST]->connect(nullptr);
 	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setDisplay(CAST_MODULE_POINTER(Display, INDEX_MODULE_DISPLAY));
+	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setMotor(CAST_MODULE_POINTER(Motor, INDEX_MODULE_MOTOR));
 	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->showData();
 
 	this->modulesPointer[INDEX_MODULE_JOYPAD] = new Joypad("jpd");
 	this->modulesPointer[INDEX_MODULE_JOYPAD]->connect(nullptr);
 	this->modulesPointer[INDEX_MODULE_JOYPAD]->start();
+
+	pin = 16;
+	this->modulesPointer[INDEX_MODULE_SENSOR] = new Sensor("snr");
+	this->modulesPointer[INDEX_MODULE_SENSOR]->connect(&pin);
+	this->modulesPointer[INDEX_MODULE_SENSOR]->start();
+
+	// Passing references with machinist
+	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR)->setMachinist(CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST));
+	CAST_MODULE_POINTER(Joypad, INDEX_MODULE_JOYPAD)->setMachinist(CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST));
 }
 
 #ifdef __SMART_APPLICATION_WITH_BLE__

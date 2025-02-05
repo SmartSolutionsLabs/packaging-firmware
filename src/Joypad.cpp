@@ -29,7 +29,7 @@ void Joypad::run(void* data) {
 				this->floorButtons[i].lastDebounceTime = millis();
 
 				if (this->floorButtons[i].reading == false) {
-					this->machinist->handleTargetFloor(i + 1);
+					this->machinist->handlePush(i - 1);
 					Serial.printf("Btn %d pressed\n", i);
 				}
 			}

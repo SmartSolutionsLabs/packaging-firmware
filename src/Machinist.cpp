@@ -27,7 +27,31 @@ void Machinist::handleArrivedFloor(unsigned int floorIndex, bool value) {
 	this->work();
 }
 
-void Machinist::handleTargetFloor(unsigned int targetFloor) {
+void Machinist::handlePush(int key) {
+	// Analize in wich screen we are and process keys according to that
+	switch (this->screen) {
+		case READY:
+			if (key < 0) {
+				// Change to speed configuration
+				this->screen = SPEED;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			break;
+		case SPEED:
+			if (key < 0) {
+				// Change to delay configuration
+				this->screen = DELAY;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			break;
+		case DELAY:
+			if (key < 0) {
+				// Change to ready screen
+				this->screen = READY;
+				this->display->print(this->screen, this->speed, this->delay);
+			}
+			break;
+	}
 }
 
 void Machinist::connect(void * data) {
