@@ -11,8 +11,23 @@ void Motor::connect(void * data) {
 }
 
 void Motor::run(void* data) {
+	// Just start this thread, but do nothing
+	Serial.print("Motor::run\n");
+	this->suspend();
+
 	while (1) {
 		vTaskDelay(this->iterationDelay);
+
+		Serial.print("Motor::Stepping\n");
+
+		for (int i = 0; i < this->steps; ++i) {
+			digitalWrite(this->stepPin, HIGH);
+			vTaskDelay(this->iterationDelay); //pulso de subida
+			digitalWrite(this->stepPin, LOW);
+			vTaskDelay(this->iterationDelay); //pulso de bajada
+		}
+
+		this->suspend();
 	}
 }
 
@@ -31,15 +46,10 @@ void Motor::moveSteps(float speed, float length, int Kstepcm) { //length en cm ,
 		return;
 	}
 
-	int steps = length / Kstepcm;
-	TickType_t xDelay = (time / 2 * steps) / portTICK_PERIOD_MS;
+	this->steps = length / Kstepcm;
 
-	for (int i=0; i < steps; i++){
-		digitalWrite(this->stepPin, HIGH);
-		vTaskDelay(xDelay); //pulso de subida
-		digitalWrite(this->stepPin, LOW);
-		vTaskDelay(xDelay); //pulso de bajada
-	}
+	// It's used in thread loop
+	this->iterationDelay = (time / 2 * this->steps) / portTICK_PERIOD_MS;
 
-	Serial.println("Motor::Stepping");
+	this->resume();
 }

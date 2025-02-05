@@ -7,6 +7,8 @@ class Motor : public Module {
 	private:
 		unsigned int stepPin;
 
+		int steps;
+
 	public:
 		Motor(const char * name, int taskCore = 1);
 

@@ -70,7 +70,10 @@ void Machinist::run(void* data) {
 }
 
 void Machinist::work(){
-	Serial.println("I will work...\n");
+	Serial.print("I will work...\n");
+
+	// Wake up the motor
+	this->motor->moveSteps(this->speed, 1.0, 1);
 }
 
 void Machinist::showData(){
