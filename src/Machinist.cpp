@@ -32,10 +32,32 @@ void Machinist::handleArrivedFloor(unsigned int id, bool value) {
 
 	// Label sensor
 	if (id == 1) {
+		TickType_t xDelay = 500 / portTICK_PERIOD_MS;
 		this->enabled = value;
+		if(value){
+			this->display->print(LABEL_FOUND,0,0);
+			vTaskDelay(xDelay);
+			this->display->print(READY,this->speed,this->delay);
+			vTaskDelay(xDelay);
+			this->display->print(LABEL_FOUND,0,0);
+			vTaskDelay(xDelay);
+			this->display->print(READY,this->speed,this->delay);
+			this->screen = READY;
+		}
+		else{
+			this->display->print(LABEL_MISSING,0,0);
+			vTaskDelay(xDelay);
+			this->display->print(READY,this->speed,this->delay);
+			vTaskDelay(xDelay);
+			this->display->print(LABEL_MISSING,0,0);
+			vTaskDelay(xDelay);
+			this->display->print(READY,this->speed,this->delay);
+			this->screen = READY;
+		}
 		Serial.printf("Motor status : %d \n" ,value);
 		return;
 	}
+	
 }
 
 void Machinist::handlePush(int key) {
