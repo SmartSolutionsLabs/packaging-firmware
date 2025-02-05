@@ -149,6 +149,13 @@ void Machinist::work(){
 	this->motor->moveSteps(this->speed, this->labelLength, this->Kstepcm);
 }
 
+void Machinist::test(int _steps){
+	Serial.print("I will test...\n");
+
+	// Wake up the motor
+	this->motor->testSteps(_steps);
+}
+
 void Machinist::showData(){
 	this->display->print(this->screen, this->speed, this->delay);
 }

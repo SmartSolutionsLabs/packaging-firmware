@@ -90,6 +90,8 @@ class Machinist : public Module {
 		void saveDelayStep(float step);
 		void saveLabelLength(float newlabelLength);
 		void saveKstepcm(float newKstepcm);
+
+		void test(int _steps);
 };
 
 #endif

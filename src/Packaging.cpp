@@ -48,6 +48,12 @@ void Packaging::processMessage(unsigned char * message, size_t length, bool prin
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new Kstepcm \n");
 			#endif
 			break;
+		case 5: // testing mode with steps
+			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->test((int)value);
+			#ifdef __SMART_APPLICATION_WITH_BLE__
+			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "Testing \n");
+			#endif
+			break;
 		default:
 			#ifdef __SMART_APPLICATION_WITH_BLE__
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "option:value (option 1 is speed; option 2 is delay)\n");

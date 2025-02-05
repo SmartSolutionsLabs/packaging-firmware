@@ -19,6 +19,8 @@ class Motor : public Module {
 		void off();
 
 		void moveSteps(float speed, float length, int Kstepcm);
+
+		void testSteps(int _steps);
 };
 
 #endif

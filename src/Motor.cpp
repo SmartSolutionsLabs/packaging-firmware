@@ -53,3 +53,12 @@ void Motor::moveSteps(float speed, float length, int Kstepcm) { //length en cm ,
 
 	this->resume();
 }
+
+void Motor::testSteps(int _steps){
+	this->steps = _steps;
+
+	// It's used in thread lo	op
+	this->iterationDelay = 50 / portTICK_PERIOD_MS;
+
+	this->resume();
+}
