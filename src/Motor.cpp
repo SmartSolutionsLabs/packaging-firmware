@@ -7,12 +7,13 @@ void Motor::connect(void * data) {
 	this->stepPin = * (unsigned int *) data;
 
 	pinMode(this->stepPin, OUTPUT);
-	digitalWrite(this->stepPin, LOW);
+	digitalWrite(this->stepPin, HIGH);
 }
 
 void Motor::run(void* data) {
 	// Just start this thread, but do nothing
 	Serial.print("Motor::run\n");
+	digitalWrite(this->stepPin, HIGH);
 	this->suspend();
 
 	while (1) {
@@ -21,9 +22,9 @@ void Motor::run(void* data) {
 		Serial.print("Motor::Stepping\n");
 
 		for (int i = 0; i < this->steps; ++i) {
-			digitalWrite(this->stepPin, HIGH);
-			vTaskDelay(this->iterationDelay); //pulso de subida
 			digitalWrite(this->stepPin, LOW);
+			vTaskDelay(this->iterationDelay); //pulso de subida
+			digitalWrite(this->stepPin, HIGH);
 			vTaskDelay(this->iterationDelay); //pulso de bajada
 		}
 
@@ -32,7 +33,7 @@ void Motor::run(void* data) {
 }
 
 void Motor::off() {
-	digitalWrite(this->stepPin, LOW);
+	digitalWrite(this->stepPin, HIGH);
 	Serial.println("Motor::off");
 }
 
