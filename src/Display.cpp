@@ -76,5 +76,19 @@ void Display::print(Screen screen, float speed, float delay){
 			this->lcd->setCursor(9,1);
 			this->lcd->print("ms");
 			break;
+
+		case MANUAL_MOVEMENT:
+			this->lcd->setCursor(0,0);
+			this->lcd->print("      Move      ");
+			this->lcd->setCursor(0,1);
+			this->lcd->print("-> One step");
+			break;
+		
+		case OFFSET:
+			this->lcd->setCursor(0,0);
+			this->lcd->print("     OFFSET     ");
+			this->lcd->setCursor(0,1);
+			this->lcd->print("  PRESS ENTER   ");
+			break;
 	}
 }

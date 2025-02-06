@@ -42,13 +42,25 @@ void Packaging::processMessage(unsigned char * message, size_t length, bool prin
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new LabelLength \n");
 			#endif
 			break;
-		case 4: // setting Kstepcm 
+		case 4: // setting Kstepcm
 			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveKstepcm(value);
 			#ifdef __SMART_APPLICATION_WITH_BLE__
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new Kstepcm \n");
 			#endif
 			break;
-		case 5: // testing mode with steps
+		case 5: // force setting delay
+			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveDelay(value);
+			#ifdef __SMART_APPLICATION_WITH_BLE__
+			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new initial Delay \n");
+			#endif
+			break;
+		case 6: // setting test step (manual step value)
+			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveTestStep((int) value);
+			#ifdef __SMART_APPLICATION_WITH_BLE__
+			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new initial Delay \n");
+			#endif
+			break;
+		case 10: // testing mode with steps
 			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->test((int)value);
 			#ifdef __SMART_APPLICATION_WITH_BLE__
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "Testing \n");
@@ -86,9 +98,9 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 	this->modulesPointer[INDEX_MODULE_MOTOR]->start();
 
 	this->modulesPointer[INDEX_MODULE_MACHINIST] = new Machinist("mac");
-	this->modulesPointer[INDEX_MODULE_MACHINIST]->connect(nullptr);
-	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setDisplay(CAST_MODULE_POINTER(Display, INDEX_MODULE_DISPLAY));
 	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setMotor(CAST_MODULE_POINTER(Motor, INDEX_MODULE_MOTOR));
+	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setDisplay(CAST_MODULE_POINTER(Display, INDEX_MODULE_DISPLAY));
+	this->modulesPointer[INDEX_MODULE_MACHINIST]->connect(nullptr);
 	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->showData();
 
 	this->modulesPointer[INDEX_MODULE_JOYPAD] = new Joypad("jpd");
@@ -111,6 +123,11 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR_BOTTLE)->setMachinist(CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST));
 	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR_LABEL)->setMachinist(CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST));
 	CAST_MODULE_POINTER(Joypad, INDEX_MODULE_JOYPAD)->setMachinist(CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST));
+
+	// Read label sensor value to enable mechanism
+	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->enable(
+		CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR_LABEL)->getStartValue()
+	);
 }
 
 #ifdef __SMART_APPLICATION_WITH_BLE__

@@ -9,6 +9,8 @@ class Motor : public Module {
 
 		int steps;
 
+		int delay;
+
 	public:
 		Motor(const char * name, int taskCore = 1);
 
@@ -18,9 +20,11 @@ class Motor : public Module {
 
 		void off();
 
-		void moveSteps(float speed, float length, int Kstepcm);
+		void moveSteps(float speed, float length, float Kstepcm);
 
 		void testSteps(int _steps);
+
+		void setDelay(int delay);
 };
 
 #endif

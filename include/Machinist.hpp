@@ -15,7 +15,7 @@ class Machinist : public Module {
 
 		Motor * motor;
 
-		bool enabled;
+		bool enabled = false;
 
 		Display * display;
 
@@ -30,6 +30,9 @@ class Machinist : public Module {
 		float delayStep;
 
 		float labelLength;
+
+		// For manual movement
+		int testStep;
 
 		float Kstepcm;
 		/**
@@ -94,8 +97,11 @@ class Machinist : public Module {
 		void saveDelayStep(float step);
 		void saveLabelLength(float newlabelLength);
 		void saveKstepcm(float newKstepcm);
+		void saveTestStep(int step);
 
 		void test(int _steps);
+
+		void enable(bool enabled);
 };
 
 #endif

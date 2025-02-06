@@ -7,7 +7,9 @@ enum Screen {
 	SPEED,
 	DELAY,
 	CHANGE_SPEED,
-	CHANGE_DELAY
+	CHANGE_DELAY,
+	OFFSET,
+	MANUAL_MOVEMENT,
 };
 
 #endif

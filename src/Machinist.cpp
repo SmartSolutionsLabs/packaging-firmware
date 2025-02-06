@@ -76,7 +76,7 @@ void Machinist::handlePush(int key) {
 			}
 			else if (key == 3) {
 				// Change to speed configuration
-				this->screen = READY;
+				this->screen = OFFSET;
 			}
 			else if (key == 2) {
 				// Change to speed configuration
@@ -112,6 +112,29 @@ void Machinist::handlePush(int key) {
 				this->screen = DELAY;
 			}
 			break;
+
+		case OFFSET:
+			if (key == 2) {
+				this->screen = MANUAL_MOVEMENT;
+			}
+			if (key == 1) {
+				this->screen = DELAY;
+			}
+			else if (key == 3) {
+				// Save delay increase
+				this->screen = READY;
+			}
+			break;
+
+		case MANUAL_MOVEMENT:
+			if (key == 3) {
+				this->motor->testSteps(this->testStep);
+			}
+			else if (key == 2) {
+				// Go to home screen
+				this->screen = OFFSET;
+			}
+			break;
 	}
 
 	// Always send values to display
@@ -133,6 +156,12 @@ void Machinist::connect(void * data) {
 	// loading "constants" data
 	this->labelLength = this->preferences->getFloat("labelLength", 4); // define el tamaño de etiqueta
 	this->Kstepcm = this->preferences->getFloat("Kstepcm", 100); //define cuantos pasos da el motor para mover la etiqueta 1 cm.
+
+	// Loading values using in tests
+	this->testStep = this->preferences->getInt("testStep", 10);
+
+	// Motor must exist before this machinist
+	this->motor->setDelay((int) this->delay);
 }
 
 void Machinist::run(void* data) {
@@ -182,6 +211,7 @@ void Machinist::saveDelay(float delay) {
 	}
 	else {
 		this->delay = delay;
+		this->motor->setDelay((int) this->delay);
 	}
 
 	this->preferences->putFloat("delay", this->delay);
@@ -209,4 +239,14 @@ void Machinist::saveKstepcm(float newKstepcm) {
 	this->Kstepcm = newKstepcm;
 
 	this->preferences->putFloat("Kstepcm", this->Kstepcm);
+}
+
+void Machinist::saveTestStep(int step) {
+	this->testStep = step;
+
+	this->preferences->putInt("testStep", this->testStep);
+}
+
+void Machinist::enable(bool enabled) {
+	this->enabled = enabled;
 }

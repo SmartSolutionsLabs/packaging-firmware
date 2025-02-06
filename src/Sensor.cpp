@@ -12,7 +12,7 @@ void Sensor::connect(void * data) {
 }
 
 void Sensor::run(void* data) {
-	this->iterationDelay = 1000 / portTICK_PERIOD_MS;
+	this->iterationDelay = 10 / portTICK_PERIOD_MS;
 	vTaskDelay(this->iterationDelay);
 	while (1) {
 		this->reading = digitalRead(this->pin); // LOW is pressed

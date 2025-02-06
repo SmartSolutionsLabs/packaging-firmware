@@ -1,4 +1,4 @@
-#include "Motor.hpp"
+#include "Motor.hpp" // etiqueta de 160 mm , espaciado 3.5 mm = 163.5 mm == 327steps
 
 Motor::Motor(const char * name, int taskCore) : Module(name, taskCore) {
 }
@@ -16,18 +16,23 @@ void Motor::run(void* data) {
 	digitalWrite(this->stepPin, HIGH);
 	this->suspend();
 
+	static int interDelay = 250;
+
 	while (1) {
-		vTaskDelay(this->iterationDelay);
-
-		Serial.print("Motor::Stepping\n");
-
+		ets_delay_us(this->delay*1000); // microseconds
+		Serial.printf("Motor::Stepping\n");
+		Serial.printf("steps: %d \n" , this->steps);
+		Serial.printf("iterationDelay : %d \n", (int)this->iterationDelay);
+		
 		for (int i = 0; i < this->steps; ++i) {
 			digitalWrite(this->stepPin, LOW);
-			vTaskDelay(this->iterationDelay); //pulso de subida
+			//vTaskDelay(this->iterationDelay); //pulso de subida
+			ets_delay_us(interDelay);
 			digitalWrite(this->stepPin, HIGH);
-			vTaskDelay(this->iterationDelay); //pulso de bajada
+			//vTaskDelay(this->iterationDelay); //pulso de bajada
+			ets_delay_us(interDelay);
 		}
-
+		//Serial.print("Motor::finish\n");
 		this->suspend();
 	}
 }
@@ -37,20 +42,22 @@ void Motor::off() {
 	Serial.println("Motor::off");
 }
 
-void Motor::moveSteps(float speed, float length, int Kstepcm) { //length en cm , speed en cm/s ,Kstepcm en cm/tick
+void Motor::moveSteps(float speed, float length, float Kstepcm) { //length en cm , speed en cm/s ,Kstepcm en cm/tick
+    length = 163.5; //mm
+	
 	int time; //time , en milisegundos
 	if (speed !=0){
-		time = 1000 * length / speed;
+		time = 1000 * (length / speed);
 	}
 	else {
 		time = 0 ;
 		return;
 	}
 
-	this->steps = length / Kstepcm;
+	this->steps = length * Kstepcm; // mm * steps/mm
 
 	// It's used in thread loop
-	this->iterationDelay = (time / 2 * this->steps) / portTICK_PERIOD_MS;
+	this->iterationDelay = (time / (this->steps * 2)) / portTICK_PERIOD_MS;
 
 	this->resume();
 }
@@ -62,4 +69,8 @@ void Motor::testSteps(int _steps){
 	this->iterationDelay = 50 / portTICK_PERIOD_MS;
 
 	this->resume();
+}
+
+void Motor::setDelay(int delay) {
+	this->delay = delay;
 }
