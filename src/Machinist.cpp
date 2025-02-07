@@ -93,6 +93,8 @@ void Machinist::handlePush(int key) {
 				this->setSpeed(this->speed + this->speedStep);
 			}
 			else if (key == 2) {
+				// Saving after setting
+				this->saveSpeed();
 				// Change to speed configuration
 				this->screen = SPEED;
 			}
@@ -108,7 +110,9 @@ void Machinist::handlePush(int key) {
 				this->setDelay(this->delay + this->delayStep);
 			}
 			else if (key == 2) {
-				// Change to speed configuration
+				// Saving after setting
+				this->saveDelay();
+				// Change to delay configuration
 				this->screen = DELAY;
 			}
 			break;
