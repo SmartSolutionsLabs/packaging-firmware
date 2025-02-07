@@ -25,11 +25,11 @@ class Machinist : public Module {
 
 		float delay;
 
+		float labelLength;
+
 		float speedStep;
 
 		float delayStep;
-
-		float labelLength;
 
 		// For manual movement
 		int testStep;

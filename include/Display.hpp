@@ -17,7 +17,7 @@ class Display : public Module {
 
 		void run(void* data) override;
 
-		void print(Screen screen, float speed, float delay);
+		void print(Screen screen, float speed, float delay, float length);
 };
 
 #endif

@@ -44,7 +44,7 @@ void Machinist::handlePush(int key) {
 		case READY:
 			if (key == 1) {
 				// Change to speed configuration
-				this->screen = DELAY;
+				this->screen = OFFSET;
 			}
 			else if (key == 3) {
 				// Change to speed configuration
@@ -76,13 +76,29 @@ void Machinist::handlePush(int key) {
 			}
 			else if (key == 3) {
 				// Change to speed configuration
-				this->screen = OFFSET;
+				this->screen = LENGTH;
 			}
 			else if (key == 2) {
 				// Change to speed configuration
 				this->screen = CHANGE_DELAY;
 			}
 			break;
+
+		case LENGTH:
+			if (key == 1) {
+				// Change to speed configuration
+				this->screen = DELAY;
+			}
+			else if (key == 3) {
+				// Change to speed configuration
+				this->screen = OFFSET;
+			}
+			else if (key == 2) {
+				// Change to speed configuration
+				this->screen = CHANGE_LENGTH;
+			}
+			break;
+
 		case CHANGE_SPEED:
 			if (key == 1) {
 				// Change to speed configuration
@@ -113,6 +129,21 @@ void Machinist::handlePush(int key) {
 			}
 			break;
 
+		case CHANGE_LENGTH:
+			if (key == 1) {
+				// Save delay decrease
+				this->saveLabelLength(this->labelLength - 0.02);
+			}
+			else if (key == 3) {
+				// Save delay increase
+				this->saveLabelLength(this->labelLength + 0.02);
+			}
+			else if (key == 2) {
+				// Change to speed configuration
+				this->screen = LENGTH;
+			}
+			break;
+
 		case OFFSET:
 			if (key == 2) {
 				this->screen = MANUAL_MOVEMENT;
@@ -138,7 +169,7 @@ void Machinist::handlePush(int key) {
 	}
 
 	// Always send values to display
-	this->display->print(this->screen, this->speed, this->delay);
+	this->display->print(this->screen, this->speed, this->delay,this->labelLength);
 }
 
 void Machinist::connect(void * data) {
@@ -185,15 +216,15 @@ void Machinist::test(int _steps){
 }
 
 void Machinist::showData(){
-	this->display->print(this->screen, this->speed, this->delay);
+	this->display->print(this->screen, this->speed, this->delay, this->labelLength);
 }
 
 void Machinist::saveSpeed(float speed) {
-	if(speed < 0.1) {
-		this->speed = 0.1;
+	if(speed < 1.5) {
+		this->speed = 1.5;
 	}
-	else if (speed > 10) {
-		this->speed = 10;
+	else if (speed > 300) {
+		this->speed = 300;
 	}
 	else {
 		this->speed = speed;

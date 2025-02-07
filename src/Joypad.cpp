@@ -5,7 +5,7 @@ Joypad::Joypad(const char * name, int taskCore) : Module(name, taskCore) {
 	this->floorButtons[1].pin = 4;
 	this->floorButtons[2].pin = 15;
 
-	this->iterationDelay = 10 / portTICK_PERIOD_MS;
+	this->iterationDelay = 5 / portTICK_PERIOD_MS;
 }
 
 void Joypad::connect(void * data) {

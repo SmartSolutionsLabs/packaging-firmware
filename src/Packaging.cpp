@@ -57,7 +57,7 @@ void Packaging::processMessage(unsigned char * message, size_t length, bool prin
 		case 6: // setting test step (manual step value)
 			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveTestStep((int) value);
 			#ifdef __SMART_APPLICATION_WITH_BLE__
-			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new initial Delay \n");
+			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new test steps \n");
 			#endif
 			break;
 		case 10: // testing mode with steps
@@ -66,6 +66,13 @@ void Packaging::processMessage(unsigned char * message, size_t length, bool prin
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "Testing \n");
 			#endif
 			break;
+
+		case 100:
+			#ifdef __SMART_APPLICATION_WITH_BLE__
+			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "Help: \n 1: Set SpeedStep \n 2: Set delayStep \n 3: Set LabelLength \n 4: Set Steps/mm \n 5: Set InitialDelay \n 6: Set Test Steps \n");
+			#endif
+			break;
+
 		default:
 			#ifdef __SMART_APPLICATION_WITH_BLE__
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "option:value (option 1 is speed; option 2 is delay)\n");

@@ -11,6 +11,8 @@ class Motor : public Module {
 
 		int delay;
 
+		float stepDelay;
+
 	public:
 		Motor(const char * name, int taskCore = 1);
 
