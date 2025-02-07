@@ -90,9 +90,13 @@ class Machinist : public Module {
 			display = newDisplay;
 		}
 
+		// Just setting within bounds
+		void setSpeed(float speed);
+		void setDelay(float delay);
+
 		// Save into ROM new "constants"
-		void saveSpeed(float speed);
-		void saveDelay(float delay);
+		void saveSpeed();
+		void saveDelay();
 		void saveSpeedStep(float step);
 		void saveDelayStep(float step);
 		void saveLabelLength(float newlabelLength);
