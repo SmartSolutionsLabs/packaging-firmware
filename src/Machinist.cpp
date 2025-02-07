@@ -44,7 +44,7 @@ void Machinist::handlePush(int key) {
 		case READY:
 			if (key == 1) {
 				// Change to speed configuration
-				this->screen = DELAY;
+				this->screen = OFFSET;
 			}
 			else if (key == 3) {
 				// Change to speed configuration
@@ -76,25 +76,39 @@ void Machinist::handlePush(int key) {
 			}
 			else if (key == 3) {
 				// Change to speed configuration
-				this->screen = OFFSET;
+				this->screen = LENGTH;
 			}
 			else if (key == 2) {
 				// Change to speed configuration
 				this->screen = CHANGE_DELAY;
 			}
 			break;
-		case CHANGE_SPEED:
+
+		case LENGTH:
 			if (key == 1) {
 				// Change to speed configuration
-				this->setSpeed(this->speed - this->speedStep);
+				this->screen = DELAY;
 			}
 			else if (key == 3) {
 				// Change to speed configuration
-				this->setSpeed(this->speed + this->speedStep);
+				this->screen = OFFSET;
 			}
 			else if (key == 2) {
-				// Saving after setting
-				this->saveSpeed();
+				// Change to speed configuration
+				this->screen = CHANGE_LENGTH;
+			}
+			break;
+
+		case CHANGE_SPEED:
+			if (key == 1) {
+				// Change to speed configuration
+				this->saveSpeed(this->speed - this->speedStep);
+			}
+			else if (key == 3) {
+				// Change to speed configuration
+				this->saveSpeed(this->speed + this->speedStep);
+			}
+			else if (key == 2) {
 				// Change to speed configuration
 				this->screen = SPEED;
 			}
@@ -103,17 +117,30 @@ void Machinist::handlePush(int key) {
 		case CHANGE_DELAY:
 			if (key == 1) {
 				// Save delay decrease
-				this->setDelay(this->delay - this->delayStep);
+				this->saveDelay(this->delay - this->delayStep);
 			}
 			else if (key == 3) {
 				// Save delay increase
-				this->setDelay(this->delay + this->delayStep);
+				this->saveDelay(this->delay + this->delayStep);
 			}
 			else if (key == 2) {
-				// Saving after setting
-				this->saveDelay();
-				// Change to delay configuration
+				// Change to speed configuration
 				this->screen = DELAY;
+			}
+			break;
+
+		case CHANGE_LENGTH:
+			if (key == 1) {
+				// Save delay decrease
+				this->saveLabelLength(this->labelLength - 0.02);
+			}
+			else if (key == 3) {
+				// Save delay increase
+				this->saveLabelLength(this->labelLength + 0.02);
+			}
+			else if (key == 2) {
+				// Change to speed configuration
+				this->screen = LENGTH;
 			}
 			break;
 
@@ -142,7 +169,7 @@ void Machinist::handlePush(int key) {
 	}
 
 	// Always send values to display
-	this->display->print(this->screen, this->speed, this->delay);
+	this->display->print(this->screen, this->speed, this->delay,this->labelLength);
 }
 
 void Machinist::connect(void * data) {
@@ -189,27 +216,25 @@ void Machinist::test(int _steps){
 }
 
 void Machinist::showData(){
-	this->display->print(this->screen, this->speed, this->delay);
+	this->display->print(this->screen, this->speed, this->delay, this->labelLength);
 }
 
-void Machinist::setSpeed(float speed) {
-	if (speed < 0.1) {
-		this->speed = 0.1;
+void Machinist::saveSpeed(float speed) {
+	if(speed < 1.5) {
+		this->speed = 1.5;
 	}
-	else if (speed > 10) {
-		this->speed = 10;
+	else if (speed > 300) {
+		this->speed = 300;
 	}
 	else {
 		this->speed = speed;
 	}
-}
 
-void Machinist::saveSpeed() {
 	this->preferences->putFloat("speed", this->speed);
 }
 
-void Machinist::setDelay(float delay) {
-	if (delay < 50.0) {
+void Machinist::saveDelay(float delay) {
+	if(delay < 50.0) {
 		this->delay = 50.0;
 	}
 	else if (delay > 5000) {
@@ -219,9 +244,7 @@ void Machinist::setDelay(float delay) {
 		this->delay = delay;
 		this->motor->setDelay((int) this->delay);
 	}
-}
 
-void Machinist::saveDelay() {
 	this->preferences->putFloat("delay", this->delay);
 }
 

@@ -34,9 +34,7 @@ void Packaging::processMessage(unsigned char * message, size_t length, bool prin
 			break;
 		case 2: // setting delay step
 			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveDelayStep(value);
-			#ifdef __SMART_APPLICATION_WITH_BLE__
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new DELAY step\n");
-			#endif
 			break;
 		case 3: // setting LabelLength
 			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveLabelLength(value);
@@ -51,8 +49,7 @@ void Packaging::processMessage(unsigned char * message, size_t length, bool prin
 			#endif
 			break;
 		case 5: // force setting delay
-			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setDelay(value);
-			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveDelay();
+			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveDelay(value);
 			#ifdef __SMART_APPLICATION_WITH_BLE__
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new initial Delay \n");
 			#endif
