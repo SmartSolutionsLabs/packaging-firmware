@@ -9,8 +9,6 @@ class Motor : public Module {
 
 		int steps;
 
-		int delay;
-
 		float stepDelay;
 
 	public:
@@ -25,8 +23,6 @@ class Motor : public Module {
 		void moveSteps(float speed, float length, float Kstepcm);
 
 		void testSteps(int _steps);
-
-		void setDelay(int delay);
 };
 
 #endif

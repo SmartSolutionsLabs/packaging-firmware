@@ -178,9 +178,6 @@ void Machinist::connect(void * data) {
 
 	// Loading values using in tests
 	this->testStep = this->preferences->getInt("testStep", 10);
-
-	// Motor must exist before this machinist
-	this->motor->setDelay((int) this->delay);
 }
 
 void Machinist::run(void* data) {
@@ -245,7 +242,6 @@ void Machinist::setDelay(float delay) {
 	}
 	else {
 		this->delay = delay;
-		this->motor->setDelay((int) this->delay);
 	}
 }
 

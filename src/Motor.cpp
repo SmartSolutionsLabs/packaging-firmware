@@ -96,7 +96,3 @@ void Motor::testSteps(int _steps){
 
 	this->resume();
 }
-
-void Motor::setDelay(int delay) {
-	this->delay = delay;
-}
