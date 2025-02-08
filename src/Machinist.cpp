@@ -136,7 +136,7 @@ void Machinist::handlePush(int key) {
 		case CHANGE_LENGTH:
 			if (key == 1) {
 				// Save delay decrease
-				this->setLabelLength(this->labelLength + 0.01);
+				this->setLabelLength(this->labelLength - 0.01);
 			}
 			else if (key == 3) {
 				// Save delay increase
