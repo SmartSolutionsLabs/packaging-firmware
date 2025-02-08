@@ -21,7 +21,10 @@ void Joypad::run(void* data) {
 	this->floorButtons[1].lastDebounceTime = millis();
 	this->floorButtons[2].lastDebounceTime = millis();
 
+	this->iterationDelay = 1 / portTICK_PERIOD_MS;
+
 	while (1) {
+		vTaskDelay(this->iterationDelay);
 		// Verify floor button state
 		for(i=0;i<3;i++) {
 			this->floorButtons[i].reading = digitalRead(this->floorButtons[i].pin);  //handle true
