@@ -40,16 +40,6 @@ class Machinist : public Module {
 		 */
 		void work();
 
-		/**
-		 * It's the countdown hand.
-		 */
-		esp_timer_handle_t countdownHandTimer = nullptr;
-
-		/**
-		 * Capsule to execute work.
-		 */
-		std::function<void()> privateAction;
-
 		// Flag used in thread loop
 		bool newBottle = false;
 
