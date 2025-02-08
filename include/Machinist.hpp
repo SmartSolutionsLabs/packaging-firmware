@@ -55,8 +55,6 @@ class Machinist : public Module {
 		/**
 		 * Modify values in floors array.
 		 */
-		void handleLeavedFloor(unsigned int floorIndex, bool value);
-
 		void handleArrivedFloor(unsigned int floorIndex, bool value);
 
 		/**
