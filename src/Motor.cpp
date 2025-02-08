@@ -22,6 +22,7 @@ void Motor::run(void* data) {
 		this->working = true;
 		float calc_delay = 1000 * this->stepDelay / 3.95;
 		int interDelay = (int)calc_delay;
+		int delay = 100;
 		Serial.printf(" * interDelay : %d \n", interDelay);
 		i = this->steps;
 		int spendtime = millis();
@@ -29,12 +30,21 @@ void Motor::run(void* data) {
 		// the real work
 		while(i>0) {
 			i--;
+
 			GPIO.out_w1tc = (1 << this->stepPin);
 			//vTaskDelay(this->iterationDelay); //pulso de subida
-			ets_delay_us(interDelay);
+			ets_delay_us(delay);
 			GPIO.out_w1ts = (1 << this->stepPin);
 			//vTaskDelay(this->iterationDelay); //pulso de bajada
-			ets_delay_us(interDelay);
+			ets_delay_us(delay);
+
+			// accelerate
+			if (delay > interDelay) {
+				delay -= 1; //aumentar delay desacelera
+				if (delay < interDelay) {
+					delay = interDelay;
+				}
+			}
 		}
 		
 		this->working = false;
