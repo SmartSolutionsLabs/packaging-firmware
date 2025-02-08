@@ -10,13 +10,13 @@ void Machinist::handleArrivedFloor(unsigned int id, bool value) {
 	// Bottle sensor
 	if (id == 0 && this->enabled && value == false) {
 		this->newBottle = true;
+		Serial.println("--------------- New bottle detected in run() method. ---------------------------");
 		return;
 	}
 
 	// Label sensor
 	if (id == 1) {
 		this->enabled = value;
-		Serial.printf("Motor status : %d \n" ,value);
 		return;
 	}
 }
@@ -147,6 +147,7 @@ void Machinist::handlePush(int key) {
 
 		case MANUAL_MOVEMENT:
 			if (key == 3) {
+				this->motor->testSteps(8000);
 				this->motor->testSteps(this->testStep);
 			}
 			else if (key == 2) {
@@ -181,18 +182,20 @@ void Machinist::connect(void * data) {
 }
 
 void Machinist::run(void* data) {
-	static unsigned int newBottleCounter = millis() ;
+	static unsigned long newBottleCounter = millis() ;
 	static bool newBottleCounter_flag = false;
 
 	while (1) {
 		vTaskDelay(1);
 		if(this->newBottle == true){
+			Serial.printf(" ########### New Bottle Inserted ###########\n");
+			this->newBottle = false;
 			newBottleCounter = millis(); // esto lo ejecuta solamente el sensor;
 			newBottleCounter_flag = true;
-			this->newBottle = false;
 		}
 
-		if(newBottleCounter_flag == true && millis() - newBottleCounter > this->delay){
+		if( newBottleCounter_flag == true && (millis() - newBottleCounter) >= this->delay){
+			Serial.printf(" ###########    Motor Start      ###########\n");
 			newBottleCounter_flag = false;
 			this->work();                    // paso el "delay " y empieza a trabajar motor
 		}
@@ -200,7 +203,7 @@ void Machinist::run(void* data) {
 }
 
 void Machinist::work(){
-	Serial.print("I will work...\n");
+	Serial.print("----------------- I will work ---------------\n");
 
 	// Wake up the motor
 	this->motor->moveSteps(this->speed, this->labelLength, this->Kstepcm);

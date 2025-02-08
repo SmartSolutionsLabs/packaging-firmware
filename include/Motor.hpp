@@ -11,6 +11,8 @@ class Motor : public Module {
 
 		float stepDelay;
 
+		bool working;
+
 	public:
 		Motor(const char * name, int taskCore = 1);
 
@@ -23,6 +25,10 @@ class Motor : public Module {
 		void moveSteps(float speed, float length, float Kstepcm);
 
 		void testSteps(int _steps);
+
+		void setDelay(int delay);
+
+		bool isWorking();
 };
 
 #endif

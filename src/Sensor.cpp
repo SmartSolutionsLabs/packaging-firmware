@@ -30,14 +30,14 @@ void Sensor::run(void* data) {
 				this->buttonState = true;
 				this->lastReading = this->reading;
 				this->machinist->handleArrivedFloor(this->floorIndex, this->buttonState);
-				Serial.printf("Sensor %d rise\n", this->floorIndex);
+				//Serial.printf("Sensor %d rise\n", this->floorIndex);
 			}
 			else if (this->reading == true && this->lastReading == false){
 				this->lastButtonState = this->buttonState;
 				this->buttonState = false;
 				this->lastReading = this->reading;
 				this->machinist->handleArrivedFloor(this->floorIndex, this->buttonState);
-				Serial.printf("Sensor %d fall\n", this->floorIndex);
+				//Serial.printf("Sensor %d fall\n", this->floorIndex);
 			}
 		}
 		this->lastButtonState = this->reading;
