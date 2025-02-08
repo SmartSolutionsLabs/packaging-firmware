@@ -43,7 +43,7 @@ void Display::print(Screen screen, float speed, float delay, float length){
 			this->lcd->print("->");
 			this->lcd->setCursor(4,1);
 			this->lcd->print(speed,1);
-			this->lcd->setCursor(8,1);
+			this->lcd->setCursor(9,1);
 			this->lcd->print("mm/s");
 			break;
 
@@ -82,7 +82,7 @@ void Display::print(Screen screen, float speed, float delay, float length){
 			this->lcd->print("+");
 			this->lcd->setCursor(4,1);
 			this->lcd->print(speed,1);
-			this->lcd->setCursor(10,1);
+			this->lcd->setCursor(9,1);
 			this->lcd->print("mm/s");
 			break;
 
