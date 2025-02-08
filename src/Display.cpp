@@ -22,33 +22,38 @@ void Display::print(Screen screen, float speed, float delay, float length){
 
 	switch (screen){
 		case READY:
-			this->lcd->setCursor(0,0);
-			this->lcd->print("Speed : ");
-			this->lcd->setCursor(8,0);
+			this->lcd->setCursor(1,0);
+			this->lcd->print("S:");
+			this->lcd->setCursor(3,0);
 			this->lcd->print(speed,1);
-			this->lcd->setCursor(12,0);
-			this->lcd->print("mm/s");
-
 			this->lcd->setCursor(0,1);
-			this->lcd->print("Delay :");
-			this->lcd->setCursor(8,1);
+			this->lcd->print("<-            ->");
+			this->lcd->setCursor(10,0);
+			this->lcd->print("D:");
+			this->lcd->setCursor(12,0);
 			this->lcd->print(delay,0);
-			this->lcd->setCursor(12,1);
-			this->lcd->print("ms");
 			break;
 
 		case SPEED:
 			this->lcd->setCursor(0,0);
-			this->lcd->print("      Speed     ");
+			this->lcd->print("      SPEED     ");
+			this->lcd->setCursor(0,1);
+			this->lcd->print("<-  ");
+			this->lcd->setCursor(14,1);
+			this->lcd->print("->");
 			this->lcd->setCursor(4,1);
 			this->lcd->print(speed,1);
-			this->lcd->setCursor(9,1);
+			this->lcd->setCursor(8,1);
 			this->lcd->print("mm/s");
 			break;
 
 		case DELAY:
 			this->lcd->setCursor(0,0);
-			this->lcd->print("      Delay     ");
+			this->lcd->print("      DELAY     ");
+			this->lcd->setCursor(0,1);
+			this->lcd->print("<-");
+			this->lcd->setCursor(14,1);
+			this->lcd->print("->");
 			this->lcd->setCursor(4,1);
 			this->lcd->print(delay,0);
 			this->lcd->setCursor(9,1);
@@ -57,18 +62,24 @@ void Display::print(Screen screen, float speed, float delay, float length){
 
 		case LENGTH:
 			this->lcd->setCursor(0,0);
-			this->lcd->print("     Length     ");
+			this->lcd->print("     LENGTH     ");
+			this->lcd->setCursor(0,1);
+			this->lcd->print("<-");
+			this->lcd->setCursor(14,1);
+			this->lcd->print("->");
 			this->lcd->setCursor(4,1);
-			this->lcd->print(length,2);
-			this->lcd->setCursor(9,1);
+			this->lcd->print(length,3);
+			this->lcd->setCursor(10,1);
 			this->lcd->print("mm");
 			break;
 
 		case CHANGE_SPEED:
 			this->lcd->setCursor(0,0);
-			this->lcd->print("      Speed     ");
-			this->lcd->setCursor(0,1);
-			this->lcd->print("->");
+			this->lcd->print("    NEW SPEED    ");
+			this->lcd->setCursor(1,1);
+			this->lcd->print("-");
+			this->lcd->setCursor(14,1);
+			this->lcd->print("+");
 			this->lcd->setCursor(4,1);
 			this->lcd->print(speed,1);
 			this->lcd->setCursor(10,1);
@@ -77,9 +88,11 @@ void Display::print(Screen screen, float speed, float delay, float length){
 
 		case CHANGE_DELAY:
 			this->lcd->setCursor(0,0);
-			this->lcd->print("      Delay     ");
-			this->lcd->setCursor(0,1);
-			this->lcd->print("->");
+			this->lcd->print("   NEW  DELAY   ");
+			this->lcd->setCursor(1,1);
+			this->lcd->print("-");
+			this->lcd->setCursor(14,1);
+			this->lcd->print("+");
 			this->lcd->setCursor(4,1);
 			this->lcd->print(delay,0);
 			this->lcd->setCursor(9,1);
@@ -88,27 +101,29 @@ void Display::print(Screen screen, float speed, float delay, float length){
 
 		case CHANGE_LENGTH:
 			this->lcd->setCursor(0,0);
-			this->lcd->print("     Length     ");
-			this->lcd->setCursor(0,1);
-			this->lcd->print("->");
+			this->lcd->print("   NEW LENGTH   ");
+			this->lcd->setCursor(1,1);
+			this->lcd->print("-");
+			this->lcd->setCursor(14,1);
+			this->lcd->print("+");
 			this->lcd->setCursor(4,1);
-			this->lcd->print(length,2);
-			this->lcd->setCursor(9,1);
+			this->lcd->print(length,3);
+			this->lcd->setCursor(10,1);
 			this->lcd->print("mm");
 			break;
 
-		case MANUAL_MOVEMENT:
-			this->lcd->setCursor(0,0);
-			this->lcd->print("      Move      ");
-			this->lcd->setCursor(0,1);
-			this->lcd->print("-> One step");
-			break;
-		
 		case OFFSET:
 			this->lcd->setCursor(0,0);
-			this->lcd->print("     OFFSET     ");
+			this->lcd->print("  MANUAL MOVE   ");
 			this->lcd->setCursor(0,1);
-			this->lcd->print("  PRESS ENTER   ");
+			this->lcd->print("<-    Enter   ->");
+			break;
+		
+		case MANUAL_MOVEMENT:
+			this->lcd->setCursor(0,0);
+			this->lcd->print("  MANUAL MOVE   ");
+			this->lcd->setCursor(0,1);
+			this->lcd->print("      Back  Move");
 			break;
 	}
 }
