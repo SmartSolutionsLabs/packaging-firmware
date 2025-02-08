@@ -118,13 +118,13 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 	this->modulesPointer[INDEX_MODULE_JOYPAD]->start();
 
 	pin = 17;
-	this->modulesPointer[INDEX_MODULE_SENSOR_BOTTLE] = new Sensor("snrBtl", 1); // using second core
+	this->modulesPointer[INDEX_MODULE_SENSOR_BOTTLE] = new Sensor("snrBtl");
 	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR_BOTTLE)->setFloor(0);
 	this->modulesPointer[INDEX_MODULE_SENSOR_BOTTLE]->connect(&pin);
 	this->modulesPointer[INDEX_MODULE_SENSOR_BOTTLE]->start();
 
 	pin = 5;
-	this->modulesPointer[INDEX_MODULE_SENSOR_LABEL] = new Sensor("snrLbl", 1); // using second core
+	this->modulesPointer[INDEX_MODULE_SENSOR_LABEL] = new Sensor("snrLbl");
 	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR_LABEL)->setFloor(1);
 	this->modulesPointer[INDEX_MODULE_SENSOR_LABEL]->connect(&pin);
 	this->modulesPointer[INDEX_MODULE_SENSOR_LABEL]->start();
