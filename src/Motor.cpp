@@ -5,7 +5,6 @@ Motor::Motor(const char * name, int taskCore) : Module(name, taskCore) {
 
 void Motor::connect(void * data) {
 	this->stepPin = * (unsigned int *) data;
-
 	pinMode(this->stepPin, OUTPUT);
 	digitalWrite(this->stepPin, HIGH);
 }
@@ -15,7 +14,6 @@ void Motor::run(void* data) {
 	Serial.print("Motor::run\n");
 	digitalWrite(this->stepPin, HIGH);
 	this->suspend();
-	this->working = false;
 	static int i;
 
 	// this loop must not die
@@ -38,10 +36,11 @@ void Motor::run(void* data) {
 			//vTaskDelay(this->iterationDelay); //pulso de bajada
 			ets_delay_us(interDelay);
 		}
-		//Serial.printf(" ----------- Motor::finish\n");
-		Serial.printf("spent time = %d \n", millis()- spendtime);
-		vTaskDelay(1);
+		
 		this->working = false;
+		//Serial.printf(" ----------- Motor::finish\n");
+		Serial.println("Motor finished moving, calling suspend()");
+		vTaskDelay(1);
 		this->suspend();
 	}
 }
@@ -56,6 +55,7 @@ void Motor::off() {
 }
 
 void Motor::moveSteps(float speed, float length, float Kstepcm) { //length en cm , speed en cm/s ,Kstepcm en cm/tick
+	Serial.printf("Motor::moveSteps called -> Speed: %.2f, Length: %.2f, Kstepcm: %.2f\n", speed, length, Kstepcm);
 	//length = 63.5; //mm
 	//kstepcm = mm/paso ; set 2000 : 0.039607 mm/paso; 25.24800000 pasos/mm
 	// set 8000 :  101 pasos / mm
@@ -82,6 +82,7 @@ void Motor::moveSteps(float speed, float length, float Kstepcm) { //length en cm
 
 	Serial.printf("time : %f \n", time);
 	*/
+	this->working = true ;
 	this->resume();
 }
 

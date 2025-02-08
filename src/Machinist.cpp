@@ -187,14 +187,14 @@ void Machinist::run(void* data) {
 
 	while (1) {
 		vTaskDelay(1);
-		if(this->newBottle == true){
+		if(this->newBottle == true && this->motor->isWorking() == false ){
 			Serial.printf(" ########### New Bottle Inserted ###########\n");
 			this->newBottle = false;
 			newBottleCounter = millis(); // esto lo ejecuta solamente el sensor;
 			newBottleCounter_flag = true;
 		}
 
-		if( newBottleCounter_flag == true && (millis() - newBottleCounter) >= this->delay){
+		if( newBottleCounter_flag == true && (millis() - newBottleCounter) >= this->delay  &&  this->motor->isWorking() == false ){
 			Serial.printf(" ###########    Motor Start      ###########\n");
 			newBottleCounter_flag = false;
 			this->work();                    // paso el "delay " y empieza a trabajar motor
