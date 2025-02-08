@@ -111,6 +111,7 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setMotor(CAST_MODULE_POINTER(Motor, INDEX_MODULE_MOTOR));
 	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setDisplay(CAST_MODULE_POINTER(Display, INDEX_MODULE_DISPLAY));
 	this->modulesPointer[INDEX_MODULE_MACHINIST]->connect(nullptr);
+	this->modulesPointer[INDEX_MODULE_MACHINIST]->start();
 	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->showData();
 
 	this->modulesPointer[INDEX_MODULE_JOYPAD] = new Joypad("jpd");

@@ -20,9 +20,6 @@ void Motor::run(void* data) {
 
 	// this loop must not die
 	while (1) {
-		ets_delay_us(this->delay*1000); // microseconds
-		Serial.printf("Motor::Stepping\n");
-
 		float calc_delay = 1000 * this->stepDelay / 3.95;
 		int interDelay = (int)calc_delay;
 		Serial.printf(" ------------ interDelay : %d \n", interDelay);
@@ -41,7 +38,7 @@ void Motor::run(void* data) {
 		}
 		Serial.printf(" ----------- Motor::finish\n");
 		Serial.printf("spent time = %d \n", millis()- spendtime);
-
+		vTaskDelay(1);
 		this->suspend();
 	}
 }

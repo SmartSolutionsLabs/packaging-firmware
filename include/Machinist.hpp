@@ -50,6 +50,9 @@ class Machinist : public Module {
 		 */
 		std::function<void()> privateAction;
 
+		// Flag used in thread loop
+		bool newBottle = false;
+
 	public:
 		Machinist(const char * name, int taskCore = 1);
 

@@ -26,7 +26,7 @@ Machinist::~Machinist() {
 void Machinist::handleArrivedFloor(unsigned int id, bool value) {
 	// Bottle sensor
 	if (id == 0 && this->enabled && value == false) {
-		this->work();
+		this->newBottle = true;
 		return;
 	}
 
@@ -200,8 +200,21 @@ void Machinist::connect(void * data) {
 }
 
 void Machinist::run(void* data) {
+	static unsigned int newBottleCounter = millis() ;
+	static bool newBottleCounter_flag = false;
+
 	while (1) {
-		vTaskDelay(3 * this->iterationDelay);
+		vTaskDelay(1);
+		if(this->newBottle == true){
+			newBottleCounter = millis(); // esto lo ejecuta solamente el sensor;
+			newBottleCounter_flag = true;
+			this->newBottle = false;
+		}
+
+		if(newBottleCounter_flag == true && millis() - newBottleCounter > this->delay){
+			newBottleCounter_flag = false;
+			this->work();                    // paso el "delay " y empieza a trabajar motor
+		}
 	}
 }
 
