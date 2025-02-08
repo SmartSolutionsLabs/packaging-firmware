@@ -39,7 +39,8 @@ void Packaging::processMessage(unsigned char * message, size_t length, bool prin
 			#endif
 			break;
 		case 3: // setting LabelLength
-			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveLabelLength(value);
+			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setLabelLength(value);
+			CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->saveLabelLength();
 			#ifdef __SMART_APPLICATION_WITH_BLE__
 			BluetoothLowEnergy::sendOut(&this->bleCharacteristics[0], "new LabelLength \n");
 			#endif

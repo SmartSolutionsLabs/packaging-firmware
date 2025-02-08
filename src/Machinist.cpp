@@ -136,14 +136,15 @@ void Machinist::handlePush(int key) {
 		case CHANGE_LENGTH:
 			if (key == 1) {
 				// Save delay decrease
-				this->saveLabelLength(this->labelLength - 0.02);
+				this->setLabelLength(this->labelLength + 0.01);
 			}
 			else if (key == 3) {
 				// Save delay increase
-				this->saveLabelLength(this->labelLength + 0.02);
+				this->setLabelLength(this->labelLength + 0.01);
 			}
 			else if (key == 2) {
 				// Change to speed configuration
+				this->saveLabelLength();
 				this->screen = LENGTH;
 			}
 			break;
@@ -281,9 +282,20 @@ void Machinist::saveDelayStep(float step) {
 	this->preferences->putFloat("delayStep", this->delayStep);
 }
 
-void Machinist::saveLabelLength(float newlabelLength) {
-	this->labelLength = newlabelLength;
+void Machinist::setLabelLength(float newlabelLength) {
+	if (newlabelLength < 1.0) {
+		this->labelLength = 1.0;
+	}
+	else if (newlabelLength > 1000) {
+		this->labelLength = 1000.0;
+	}
+	else {
+		this->labelLength = newlabelLength;
+	}
+	
+}
 
+void Machinist::saveLabelLength() {
 	this->preferences->putFloat("labelLength", this->labelLength);
 }
 

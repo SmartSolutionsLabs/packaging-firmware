@@ -96,13 +96,14 @@ class Machinist : public Module {
 		// Just setting within bounds
 		void setSpeed(float speed);
 		void setDelay(float delay);
+		void setLabelLength(float length);
 
 		// Save into ROM new "constants"
 		void saveSpeed();
 		void saveDelay();
 		void saveSpeedStep(float step);
 		void saveDelayStep(float step);
-		void saveLabelLength(float newlabelLength);
+		void saveLabelLength();
 		void saveKstepcm(float newKstepcm);
 		void saveTestStep(int step);
 
