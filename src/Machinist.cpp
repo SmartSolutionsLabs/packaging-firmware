@@ -51,8 +51,8 @@ void Machinist::handlePush(int key) {
 				this->screen = SPEED;
 			}
 			else if (key == 2) {
-				// Change to speed configuration
-				this->screen = READY;
+				// There is no functionality
+				return;
 			}
 			break;
 		case SPEED:
