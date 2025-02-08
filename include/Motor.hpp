@@ -26,8 +26,6 @@ class Motor : public Module {
 
 		void testSteps(int _steps);
 
-		void setDelay(int delay);
-
 		bool isWorking();
 };
 
