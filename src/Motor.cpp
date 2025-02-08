@@ -17,7 +17,6 @@ void Motor::run(void* data) {
 	this->suspend();
 
 	static int i;
-	static int suspensionAfterIterations = 10;
 
 	// this loop must not die
 	while (1) {
@@ -43,9 +42,7 @@ void Motor::run(void* data) {
 		Serial.printf(" ----------- Motor::finish\n");
 		Serial.printf("spent time = %d \n", millis()- spendtime);
 
-		if ((--suspensionAfterIterations) <= 0) {
-			this->suspend();
-		}
+		this->suspend();
 	}
 }
 
