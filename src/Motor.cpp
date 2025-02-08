@@ -18,6 +18,7 @@ void Motor::run(void* data) {
 
 	static int i;
 	
+	// this loop must not die
 	while (1) {
 		ets_delay_us(this->delay*1000); // microseconds
 		Serial.printf("Motor::Stepping\n");
@@ -27,6 +28,8 @@ void Motor::run(void* data) {
 	    Serial.printf(" ------------ interDelay : %d \n", interDelay);
 		i = this->steps;
 		int spendtime = millis();
+		
+		// the real work
 		while(i>0) {
 			i--;
 			GPIO.out_w1tc = (1 << this->stepPin);
