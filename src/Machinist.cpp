@@ -224,8 +224,8 @@ void Machinist::showData(){
 }
 
 void Machinist::setSpeed(float speed) {
-	if (speed < 0.1) {
-		this->speed = 0.1;
+	if (speed < 1.5) {
+		this->speed = 1.5;
 	}
 	else if (speed > 300) {
 		this->speed = 300;
