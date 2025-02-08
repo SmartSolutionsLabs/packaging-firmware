@@ -100,7 +100,7 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 	// Pin number for sensor
 	uint8_t pin;
 
-	this->modulesPointer[INDEX_MODULE_DISPLAY] = new Display("display");
+	this->modulesPointer[INDEX_MODULE_DISPLAY] = new Display("display", 0);
 	this->modulesPointer[INDEX_MODULE_DISPLAY]->connect(nullptr);
 
 	pin = 18;
@@ -108,25 +108,25 @@ void Packaging::initializeModulesPointerArray(unsigned int quantity) {
 	this->modulesPointer[INDEX_MODULE_MOTOR]->connect(&pin);
 	this->modulesPointer[INDEX_MODULE_MOTOR]->start();
 
-	this->modulesPointer[INDEX_MODULE_MACHINIST] = new Machinist("mac");
+	this->modulesPointer[INDEX_MODULE_MACHINIST] = new Machinist("mac", 0);
 	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setMotor(CAST_MODULE_POINTER(Motor, INDEX_MODULE_MOTOR));
 	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->setDisplay(CAST_MODULE_POINTER(Display, INDEX_MODULE_DISPLAY));
 	this->modulesPointer[INDEX_MODULE_MACHINIST]->connect(nullptr);
 	this->modulesPointer[INDEX_MODULE_MACHINIST]->start();
 	CAST_MODULE_POINTER(Machinist, INDEX_MODULE_MACHINIST)->showData();
 
-	this->modulesPointer[INDEX_MODULE_JOYPAD] = new Joypad("jpd");
+	this->modulesPointer[INDEX_MODULE_JOYPAD] = new Joypad("jpd", 0);
 	this->modulesPointer[INDEX_MODULE_JOYPAD]->connect(nullptr);
 	this->modulesPointer[INDEX_MODULE_JOYPAD]->start();
 
 	pin = 17;
-	this->modulesPointer[INDEX_MODULE_SENSOR_BOTTLE] = new Sensor("snrBtl");
+	this->modulesPointer[INDEX_MODULE_SENSOR_BOTTLE] = new Sensor("snrBtl", 0);
 	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR_BOTTLE)->setFloor(0);
 	this->modulesPointer[INDEX_MODULE_SENSOR_BOTTLE]->connect(&pin);
 	this->modulesPointer[INDEX_MODULE_SENSOR_BOTTLE]->start();
 
 	pin = 5;
-	this->modulesPointer[INDEX_MODULE_SENSOR_LABEL] = new Sensor("snrLbl");
+	this->modulesPointer[INDEX_MODULE_SENSOR_LABEL] = new Sensor("snrLbl", 0);
 	CAST_MODULE_POINTER(Sensor, INDEX_MODULE_SENSOR_LABEL)->setFloor(1);
 	this->modulesPointer[INDEX_MODULE_SENSOR_LABEL]->connect(&pin);
 	this->modulesPointer[INDEX_MODULE_SENSOR_LABEL]->start();
