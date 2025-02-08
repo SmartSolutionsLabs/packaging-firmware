@@ -16,6 +16,7 @@ void Motor::run(void* data) {
 	digitalWrite(this->stepPin, HIGH);
 	this->suspend();
 
+	static int i;
 	
 	while (1) {
 		ets_delay_us(this->delay*1000); // microseconds
@@ -24,7 +25,7 @@ void Motor::run(void* data) {
 		float calc_delay = 1000 * this->stepDelay / 3.95; 
 		int interDelay = (int)calc_delay;
 	    Serial.printf(" ------------ interDelay : %d \n", interDelay);
-		int i = this->steps;
+		i = this->steps;
 		int spendtime = millis();
 		while(i>0) {
 			i--;
