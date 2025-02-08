@@ -1,6 +1,6 @@
 #include "Machinist.hpp"
 
-Machinist::Machinist(const char * name, int taskCore) : Module(name, taskCore), screen(SPEED) {
+Machinist::Machinist(const char * name, int taskCore) : Module(name, taskCore), screen(READY) {
 }
 
 Machinist::~Machinist() {
