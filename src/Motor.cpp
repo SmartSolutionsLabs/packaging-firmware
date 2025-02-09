@@ -22,7 +22,7 @@ void Motor::run(void* data) {
 		this->working = true;
 		float calc_delay = 1000 * this->stepDelay / 3.95;
 		int interDelay = (int)calc_delay;
-		int delay = 100;
+		int delay = 200;
 		Serial.printf(" * interDelay : %d \n", interDelay);
 		i = this->steps;
 		int spendtime = millis();
@@ -84,14 +84,14 @@ void Motor::moveSteps(float speed, float length, float Kstepcm) { //length en cm
 
 	this->stepDelay = time / (2 * steps); // 1000 / (2*6350) =  0.07874 ms = 78 us
 
-	/*Serial.printf("steps: %d \n" , this->steps);
+	Serial.printf("steps: %d \n" , this->steps);
 
 	Serial.printf("LENGTH : %f \n", length);
 
 	Serial.printf("stepDelay : %f \n", this->stepDelay);
 
 	Serial.printf("time : %f \n", time);
-	*/
+	
 	this->working = true ;
 	this->resume();
 }
