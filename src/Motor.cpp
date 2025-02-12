@@ -11,8 +11,9 @@ void Motor::connect(void * data) {
 
 void Motor::run(void* data) {
 	// Just start this thread, but do nothing
-	Serial.print("Motor::run\n");
-	digitalWrite(this->stepPin, HIGH);
+	Serial.printf("Motor::run\n");
+	GPIO.out_w1ts = (1 << this->stepPin);
+	bool flag_steps_acel = true;
 	this->suspend();
 	static int i;
 
@@ -20,37 +21,63 @@ void Motor::run(void* data) {
 	while (1) {
 		
 		this->working = true;
-		float calc_delay = 1000 * this->stepDelay / 3.95;
+		float calc_delay = 1000 * this->stepDelay / 2;
 		int interDelay = (int)calc_delay;
-		int delay = 200;
-		Serial.printf(" * interDelay : %d \n", interDelay);
+
+		int secure_time_to_acelerate = 400;
+		int minDelay = interDelay; // Guardamos el mínimo
+        int maxDelay = secure_time_to_acelerate; // Delay inicial
+		int counter_secure_steps_to_acelerate = 0;
+		int Delay = maxDelay;
+		int steps_at_max_speed = this->steps ; // La mitad del recorrido para acelerar
+        if(minDelay < 12) minDelay = 12;
 		i = this->steps;
 		int spendtime = millis();
 
 		// the real work
 		while(i>0) {
 			i--;
-
 			GPIO.out_w1tc = (1 << this->stepPin);
 			//vTaskDelay(this->iterationDelay); //pulso de subida
-			ets_delay_us(delay);
+			ets_delay_us(Delay);
 			GPIO.out_w1ts = (1 << this->stepPin);
 			//vTaskDelay(this->iterationDelay); //pulso de bajada
-			ets_delay_us(delay);
+			ets_delay_us(Delay);
 
 			// accelerate
-			if (delay > interDelay) {
-				delay -= 1; //aumentar delay desacelera
-				if (delay < interDelay) {
-					delay = interDelay;
+			if (i < this->steps && Delay > minDelay && flag_steps_acel) {
+                Delay -= 1;
+				counter_secure_steps_to_acelerate ++; 
+                if (Delay < minDelay) {
+					Delay = minDelay;
+					flag_steps_acel = false;
 				}
 			}
+
+            // Desaceleración: En la segunda mitad del recorrido
+            if (i > this->steps - counter_secure_steps_to_acelerate && Delay <= maxDelay && flag_steps_acel == false) {
+                Delay += 1;
+                if (Delay > maxDelay) Delay = maxDelay;
+            }
 		}
 		
 		this->working = false;
 		//Serial.printf(" ----------- Motor::finish\n");
-		Serial.println("Motor finished moving, calling suspend()");
+		Serial.printf("spent time: %d \n ", millis()-spendtime);
+
+		Serial.printf("Motor finished moving, calling suspend()\n");
+
+		Serial.printf(" * interDelay : %d \n", interDelay);
+
 		vTaskDelay(1);
+
+		Serial.printf("steps: %d \n" , this->steps);
+
+		Serial.printf("LENGTH : %f \n", this->length);
+
+		Serial.printf("stepDelay : %f \n", this->stepDelay);
+
+		
 		this->suspend();
 	}
 }
@@ -69,8 +96,11 @@ void Motor::moveSteps(float speed, float length, float Kstepcm) { //length en cm
 	//length = 63.5; //mm
 	//kstepcm = mm/paso ; set 2000 : 0.039607 mm/paso; 25.24800000 pasos/mm
 	// set 8000 :  101 pasos / mm
-	//speed = 63.5; // mm/s
-    Kstepcm = 62.5;
+	this->length = length;
+
+	                // 8000 step/rev  == 100 steps / mm 
+	Kstepcm = 62.5; // 5000 step/rev  == 62.5 steps / mm
+
 	float time; //time , en milisegundos
 	if (speed !=0){
 		time = 1000 * length / speed; // 1000 ms
@@ -80,26 +110,21 @@ void Motor::moveSteps(float speed, float length, float Kstepcm) { //length en cm
 		return;
 	}
 
-	this->steps = length * Kstepcm; // mm * steps/mm 
+	this->steps = (int) (length * Kstepcm); // mm * steps/mm 
 
 	this->stepDelay = time / (2 * steps); // 1000 / (2*6350) =  0.07874 ms = 78 us
-
-	Serial.printf("steps: %d \n" , this->steps);
-
-	Serial.printf("LENGTH : %f \n", length);
-
-	Serial.printf("stepDelay : %f \n", this->stepDelay);
-
-	Serial.printf("time : %f \n", time);
 	
 	this->working = true ;
+	
+	Serial.printf("time : %f \n", time);
+
 	this->resume();
 }
 
 void Motor::testSteps(int _steps){
 	
-	this->steps = 1000 ; // mm * steps/mms
-	this->stepDelay = 0.05; // 1000 / (2*6350) =  0.07874 ms = 78 us
+	this->steps = 200 ; // mm * steps/mms
+	this->stepDelay = 0.20; // 1000 / (2*6350) =  0.07874 ms = 78 us
 
 	this->resume();
 }
