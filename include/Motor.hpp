@@ -11,6 +11,8 @@ class Motor : public Module {
 
 		float stepDelay;
 
+		float length;
+
 		bool working = false;
 
 	public:
