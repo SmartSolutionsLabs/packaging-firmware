@@ -33,7 +33,7 @@ void Joypad::run(void* data) {
 		for(i=0;i<3;i++) {
 				if (this->floorButtons[i].reading == false && this->floorButtons[i].lastButtonState == true) {
 					this->machinist->handlePush(i + 1);
-					Serial.printf("Btn %d pressed\n", i + 1);
+					//Serial.printf("Btn %d pressed\n", i + 1);
 				}
 			this->floorButtons[i].lastButtonState = this->floorButtons[i].reading;
 		}
