@@ -31,6 +31,10 @@ class Machinist : public Module {
 
 		float delayStep;
 
+		// flag to ensure 1 detection per bottle
+
+		bool flag_bottle_detected;
+
 		// For manual movement
 		int testStep;
 
@@ -94,7 +98,8 @@ class Machinist : public Module {
 		void saveLabelLength();
 		void saveKstepcm(float newKstepcm);
 		void saveTestStep(int step);
-
+		float getLabelLength();
+		float getKstepcm();
 		void test(int _steps);
 
 		void enable(bool enabled);

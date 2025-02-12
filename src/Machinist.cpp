@@ -8,7 +8,7 @@ Machinist::~Machinist() {
 
 void Machinist::handleArrivedFloor(unsigned int id, bool value) {
 	// Bottle sensor
-	if (id == 0 && this->enabled && value == false) {
+	if (id == 0 && this->enabled && value == false && this->flag_bottle_detected) {
 		this->newBottle = true;
 		Serial.println("--------------- New bottle detected in run() method. ---------------------------");
 		return;
@@ -119,15 +119,16 @@ void Machinist::handlePush(int key) {
 		case CHANGE_LENGTH:
 			if (key == 1) {
 				// Save delay decrease
-				this->setLabelLength(this->labelLength - 0.01);
+				this->setLabelLength(this->labelLength - 0.005);
 			}
 			else if (key == 3) {
 				// Save delay increase
-				this->setLabelLength(this->labelLength + 0.01);
+				this->setLabelLength(this->labelLength + 0.005);
 			}
 			else if (key == 2) {
 				// Change to speed configuration
 				this->saveLabelLength();
+				this->labelLength = this->getLabelLength();
 				this->screen = LENGTH;
 			}
 			break;
@@ -137,7 +138,7 @@ void Machinist::handlePush(int key) {
 				this->screen = MANUAL_MOVEMENT;
 			}
 			if (key == 1) {
-				this->screen = DELAY;
+				this->screen = LENGTH;
 			}
 			else if (key == 3) {
 				// Save delay increase
@@ -166,16 +167,16 @@ void Machinist::connect(void * data) {
 	this->preferences->begin("global", false);
 
 	// loading all data set by user in menu
-	this->speed = this->preferences->getFloat("speed", 0.1);
-	this->delay = this->preferences->getFloat("delay", 50.0);
+	this->speed = this->preferences->getFloat("speed", 100);
+	this->delay = this->preferences->getFloat("delay", 450.0);
 
 	// loading "steps" data
 	this->speedStep = this->preferences->getFloat("speedStep", 0.1);
-	this->delayStep = this->preferences->getFloat("delayStep", 50);
+	this->delayStep = this->preferences->getFloat("delayStep", 5);
 
 	// loading "constants" data
-	this->labelLength = this->preferences->getFloat("labelLength", 4); // define el tamaño de etiqueta
-	this->Kstepcm = this->preferences->getFloat("Kstepcm", 100); //define cuantos pasos da el motor para mover la etiqueta 1 cm.
+	this->labelLength = this->preferences->getFloat("labelLength", 64.500); // define el tamaño de etiqueta
+	this->Kstepcm = this->preferences->getFloat("Kstepcm", 62.5); //define cuantos pasos da el motor para mover la etiqueta 1 cm.
 
 	// Loading values using in tests
 	this->testStep = this->preferences->getInt("testStep", 10);
@@ -192,11 +193,13 @@ void Machinist::run(void* data) {
 			this->newBottle = false;
 			newBottleCounter = millis(); // esto lo ejecuta solamente el sensor;
 			newBottleCounter_flag = true;
+			this->flag_bottle_detected = false;
 		}
 
 		if( newBottleCounter_flag == true && (millis() - newBottleCounter) >= this->delay  &&  this->motor->isWorking() == false ){
 			Serial.printf(" ###########    Motor Start      ###########\n");
 			newBottleCounter_flag = false;
+			this->flag_bottle_detected = true;
 			this->work();                    // paso el "delay " y empieza a trabajar motor
 		}
 	}
@@ -266,10 +269,10 @@ void Machinist::saveDelayStep(float step) {
 
 void Machinist::setLabelLength(float newlabelLength) {
 	if (newlabelLength < 1.0) {
-		this->labelLength = 1.0;
+		this->labelLength = 1.000;
 	}
 	else if (newlabelLength > 1000) {
-		this->labelLength = 1000.0;
+		this->labelLength = 1000.000;
 	}
 	else {
 		this->labelLength = newlabelLength;
@@ -296,3 +299,12 @@ void Machinist::saveTestStep(int step) {
 void Machinist::enable(bool enabled) {
 	this->enabled = enabled;
 }
+
+float Machinist::getLabelLength(){
+	return this->preferences->getFloat("labelLength", 64.500); // define el tamaño de etiqueta	
+}
+
+float Machinist::getKstepcm(){
+	return this->Kstepcm = this->preferences->getFloat("Kstepcm", 62.5); //define cuantos pasos da el motor para mover la etiqueta 1 cm.	
+}
+	
